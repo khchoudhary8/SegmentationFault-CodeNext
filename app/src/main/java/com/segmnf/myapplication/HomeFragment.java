@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
             news.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), NewsActivity.class);
+                    Intent intent = new Intent(getContext(), ContestQuestionDetailActivity.class);
                     startActivity(intent);
                 }
             });

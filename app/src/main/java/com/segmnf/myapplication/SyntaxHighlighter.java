@@ -11,7 +11,7 @@ public class SyntaxHighlighter {
         //Language Keywords
         private static final Pattern PATTERN_KEYWORDS =
                 Pattern.compile("\\b(break|default|func|interface|case|" +
-                        "go|map|struct|using|else|goto|switch" +
+                        "go|map|struct|using|else|goto|switch|public|class|void" +
                         "|fallthrough|if|range|type|continue|for|std|return|iostream|" +
                         "string|true|false|new|nil|byte|bool|int|int8|int16|int32|int64)\\b");
 
