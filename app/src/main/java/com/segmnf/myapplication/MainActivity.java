@@ -77,49 +77,49 @@ public class MainActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance("https://tynkr-3915c-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
-        final EditText ed=(EditText)findViewById(R.id.editText);
-        final TextView tv=(TextView)findViewById(R.id.textView);
-
-        ed.setText("#include<iostream> \n using namespace std" +
-                "; \n int main() {  \n return 0; \n }");
-        ed.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                int lines=ed.getLineCount();
-                String lineText="";
-                for (int i=1;i<=lines;i++){
-                    lineText=lineText+i+"\n";
-                    tv.setText(lineText);
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        binding.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TAG",""+ binding.editText.getText());
-                try {
-                    postReq();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        final EditText ed=(EditText)findViewById(R.id.editText);
+//        final TextView tv=(TextView)findViewById(R.id.textView);
+//
+//        ed.setText("#include<iostream> \n using namespace std" +
+//                "; \n int main() {  \n return 0; \n }");
+//        ed.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                int lines=ed.getLineCount();
+//                String lineText="";
+//                for (int i=1;i<=lines;i++){
+//                    lineText=lineText+i+"\n";
+//                    tv.setText(lineText);
+//                }
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//
+//        binding.button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Log.d("TAG",""+ binding.editText.getText());
+//                try {
+//                    postReq();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
-
+//
     void postReq() throws JSONException {
         JSONObject js = new JSONObject();
-            js.put("code", binding.editText.getText());
+//            js.put("code", binding.editText.getText());
             js.put("language","cpp");
             js.put("input",binding.inputwindow.getText());
 

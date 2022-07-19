@@ -56,7 +56,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(holder.itemView.getContext(), NewsDetailActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), ContestQuestionDetailActivity.class);
                 intent.putExtra("name", model1.getAuthor());
                 intent.putExtra("title", model1.getTitle());
                 intent.putExtra("time", model1.getDate());
