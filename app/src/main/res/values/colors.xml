@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background2">#F5F5F5</color>
+    <color name="background3">#BABABA</color>
     <color name="AppTextColour">#DB2E2E2E</color>
     <color name="icon_color">#DB5C5A5A</color>
     <color name="facebook">#3F51B5</color>

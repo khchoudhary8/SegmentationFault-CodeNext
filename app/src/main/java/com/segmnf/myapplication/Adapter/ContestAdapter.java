@@ -1,10 +1,8 @@
 package com.segmnf.myapplication.Adapter;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,20 +14,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.segmnf.myapplication.ContestQuestionActivity;
 import com.segmnf.myapplication.Model.ContestModel;
 import com.segmnf.myapplication.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
@@ -65,11 +61,13 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         int indeximage = random.nextInt(cardimg.size());
         holder.card.setImageResource(cardbg.get(index));
         holder.cardimage.setImageResource(cardimg.get(indeximage));
-        holder.marks.setText(model.getMarks()+" Marks");
-        holder.duration.setText(model.getDuration()+" mins");
+        holder.marks.setText(model.getMarks() + " Marks");
+        holder.duration.setText(model.getDuration() + " mins");
         holder.date.setText(model.getDate());
-        holder.questions.setText(model.getQuestions()+" Questions");
-
+        holder.questions.setText(model.getQuestions() + " Questions");
+        if (position == items.size() - 1) {
+            holder.parent.setVisibility(View.INVISIBLE);
+        }
 
 
         holder.card.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +83,13 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
                 TextView content = (TextView) dialog.findViewById(R.id.dialogcontent);
                 TextView yes = (TextView) dialog.findViewById(R.id.back_Ok);
                 TextView no = (TextView) dialog.findViewById(R.id.backCancel);
-                content.setText("Languages supported for the contest are: C++, Java, Python, C, JavaScript, Ruby, C#.\n" +
-                        "Each submission will be tested based on our critical test data.\n" +
-                        "Please refrain from discussing strategy during the contest. All submissions are run through a plagiarism detector. Any case of code plagiarism will reduce the score of the concerned participants to 0.\n" +
+                TextView start = (TextView) dialog.findViewById(R.id.starttime);
+                TextView end = (TextView) dialog.findViewById(R.id.endtime);
+                start.setText(model.getStart());
+                end.setText(model.getEnd());
+                content.setText("Languages supported for the contest are: C++, Java, Python, C, JavaScript, Ruby, C#.\n\n" +
+                        "Each submission will be tested based on our critical test data.\n\n" +
+                        "Please refrain from discussing strategy during the contest. All submissions are run through a plagiarism detector. Any case of code plagiarism will reduce the score of the concerned participants to 0." +
                         "");
 
                 no.setOnClickListener(new View.OnClickListener() {
@@ -100,9 +102,49 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
                 yes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        Intent intent = new Intent(v.getContext(), OthersProfileActivity.class);
-//                    intent.putExtra("userid", model.getUsrid());
-//                    v.getContext().startActivity(intent);
+                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                        String currentDate = new SimpleDateFormat("dd MMM", Locale.getDefault()).format(new Date());
+                        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                        if (currentDate.equals(model.getDate())) {
+
+                            Date date_from = null;
+                            try {
+                                date_from = formatter.parse(model.getStart());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Date date_to = null;
+                            try {
+                                date_to = formatter.parse(model.getEnd());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Date dateNow = null;
+                            try {
+                                dateNow = formatter.parse(currentTime);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (date_from.before(dateNow) && date_to.after(dateNow)) {
+                                Toast.makeText(v.getContext(), "Starting Now.", Toast.LENGTH_SHORT).show();
+
+
+                                Intent intent = new Intent(v.getContext(), ContestQuestionActivity.class);
+                                intent.putExtra("qid", model.getQid());
+                                intent.putExtra("duration", model.getDuration());
+                                intent.putExtra("name", model.getDate());
+                                intent.putExtra("id", model.getId());
+                                intent.putExtra("adminid", model.getAdminid());
+
+                                v.getContext().startActivity(intent);
+
+                                dialog.dismiss();
+                            } else
+                                Toast.makeText(v.getContext(), "Contest not Started or Expired", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(v.getContext(), "Please check contest date before starting.", Toast.LENGTH_SHORT).show();
+                        }
+//
                     }
                 });
                 dialog.show();
@@ -134,9 +176,10 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
     }
 
     public class Hold extends RecyclerView.ViewHolder {
-        TextView name, marks, duration, date, questions;
+        TextView name, marks, duration, date, questions, start, end;
         ImageView cardimage;
         ImageView card;
+        CardView parent;
 
         public Hold(@NonNull View itemView) {
             super(itemView);
@@ -147,6 +190,9 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
             date = itemView.findViewById(R.id.contestdate);
             card = itemView.findViewById(R.id.cardviewcontest);
             cardimage = itemView.findViewById(R.id.imagecontest);
+            parent = itemView.findViewById(R.id.cardparent);
+
+
         }
 
     }

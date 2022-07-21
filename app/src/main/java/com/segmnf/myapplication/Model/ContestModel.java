@@ -10,8 +10,10 @@ public class ContestModel {
     String id;
     String start;
     String end;
+    String qid;
+    String adminid;
 
-    public ContestModel(String name, String date, String duration, String questions, String marks, String id, String start, String end) {
+    public ContestModel(String name, String date, String duration, String questions, String marks, String id, String start, String end, String qid, String adminid) {
         this.name = name;
         this.date = date;
         this.duration = duration;
@@ -20,9 +22,27 @@ public class ContestModel {
         this.id = id;
         this.start = start;
         this.end = end;
+        this.qid = qid;
+        this.adminid = adminid;
     }
 
     public ContestModel() {
+    }
+
+    public String getQid() {
+        return qid;
+    }
+
+    public void setQid(String qid) {
+        this.qid = qid;
+    }
+
+    public String getAdminid() {
+        return adminid;
+    }
+
+    public void setAdminid(String adminid) {
+        this.adminid = adminid;
     }
 
     public String getName() {
