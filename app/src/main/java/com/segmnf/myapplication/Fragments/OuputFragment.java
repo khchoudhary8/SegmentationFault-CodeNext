@@ -1,4 +1,4 @@
-package com.segmnf.myapplication;
+package com.segmnf.myapplication.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +12,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.segmnf.myapplication.ApiHandler;
+import com.segmnf.myapplication.ApiService;
+import com.segmnf.myapplication.Utils.PostData;
 import com.segmnf.myapplication.databinding.FragmentOuputBinding;
 
 import org.json.JSONException;

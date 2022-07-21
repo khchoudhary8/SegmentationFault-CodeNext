@@ -15,7 +15,7 @@ import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.FirebaseDatabase;
-import com.segmnf.myapplication.databinding.ActivityNewsBinding;
+import com.segmnf.myapplication.Model.NewsModel;
 import com.segmnf.myapplication.databinding.ActivityNewsDetailBinding;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.segmnf.myapplication;
+package com.segmnf.myapplication.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -7,6 +7,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.segmnf.myapplication.Fragments.EditorFragment;
+import com.segmnf.myapplication.Fragments.OuputFragment;
+import com.segmnf.myapplication.Fragments.QuestionFragment;
 
 
 public class QuestionPagerAdapter extends FragmentStateAdapter {

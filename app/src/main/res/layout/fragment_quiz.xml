@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:background="@drawable/buttonbg"
     android:layout_height="match_parent"
-    tools:context=".QuizFragment">
+    tools:context=".Fragments.QuizFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -22,7 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.FirebaseDatabase;
-import com.segmnf.myapplication.databinding.ActivityMainBinding;
+import com.segmnf.myapplication.Model.NewsModel;
 import com.segmnf.myapplication.databinding.ActivityNewsBinding;
 
 import org.json.JSONArray;

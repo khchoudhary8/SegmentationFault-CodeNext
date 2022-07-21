@@ -16,6 +16,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.segmnf.myapplication.Fragments.ContestFragment;
+import com.segmnf.myapplication.Fragments.HomeFragment;
+import com.segmnf.myapplication.Fragments.QuizFragment;
 import com.segmnf.myapplication.databinding.ActivityHomeBinding;
 
 public class HomeActivity extends AppCompatActivity {

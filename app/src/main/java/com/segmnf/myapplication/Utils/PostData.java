@@ -1,4 +1,6 @@
-package com.segmnf.myapplication;
+package com.segmnf.myapplication.Utils;
+
+import com.segmnf.myapplication.ApiHandler;
 
 public class PostData
 {

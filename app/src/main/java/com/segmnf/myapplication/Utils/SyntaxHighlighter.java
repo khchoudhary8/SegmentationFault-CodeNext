@@ -1,8 +1,9 @@
-package com.segmnf.myapplication;
+package com.segmnf.myapplication.Utils;
 
 import android.content.Context;
 
 import com.amrdeveloper.codeview.CodeView;
+import com.segmnf.myapplication.R;
 
 import java.util.regex.Pattern;
 

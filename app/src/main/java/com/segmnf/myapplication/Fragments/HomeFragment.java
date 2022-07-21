@@ -1,14 +1,12 @@
-package com.segmnf.myapplication;
+package com.segmnf.myapplication.Fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,6 +17,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.segmnf.myapplication.ContestQuestionDetailActivity;
+import com.segmnf.myapplication.R;
+import com.segmnf.myapplication.Model.UserModel;
 
 
 public class HomeFragment extends Fragment {
@@ -48,7 +49,8 @@ public class HomeFragment extends Fragment {
                         if (snapshot.exists()) {
                             UserModel model = snapshot.getValue(UserModel.class);
                             name.setText(model.getName());
-                            Glide.with(getActivity()).load(model.getImage()).into(pp);
+                            if(getContext()!=null)
+                            Glide.with(getContext()).load(model.getImage()).into(pp);
                         }
                     }
 

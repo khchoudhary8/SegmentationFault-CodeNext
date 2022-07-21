@@ -13,12 +13,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.FirebaseDatabase;
+import com.segmnf.myapplication.Adapter.QuestionPagerAdapter;
 import com.segmnf.myapplication.databinding.ActivityContestQuestionDetailBinding;
-import com.segmnf.myapplication.databinding.ActivityMainBinding;
 
 public class ContestQuestionDetailActivity extends AppCompatActivity {
     ActivityContestQuestionDetailBinding binding;

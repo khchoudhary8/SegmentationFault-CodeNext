@@ -1,4 +1,4 @@
-package com.segmnf.myapplication;
+package com.segmnf.myapplication.Model;
 
 public class UserModel {
     String uid;

@@ -1,11 +1,9 @@
-package com.segmnf.myapplication;
+package com.segmnf.myapplication.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.segmnf.myapplication.Utils.SyntaxHighlighter;
 import com.segmnf.myapplication.databinding.FragmentEditorBinding;
 import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
 
