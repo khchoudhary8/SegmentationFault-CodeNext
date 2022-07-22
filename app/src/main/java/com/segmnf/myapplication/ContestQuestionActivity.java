@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -92,7 +94,7 @@ public class ContestQuestionActivity extends AppCompatActivity {
 //        this.testoutputs = testoutputs;
 //        this.cpu = cpu;
 //        this.memory = memory;
-//        database.getReference().child("Admins").child(adminid).child("questions").child("23").setValue(new QuestionModel("2","3. Maximum Number of Pairs in Array"
+//        database.getReference().child("Admins").child(adminid).child("questions").child("23").setValue(new QuestionModel("2","Maximum Number of Pairs in Array"
 //        ,"20","Easy","10",
 //                "You are given a 0-indexed integer array nums. In one operation, you may do the following:\n" +
 //                "\n" +
@@ -113,15 +115,16 @@ public class ContestQuestionActivity extends AppCompatActivity {
 //                        "Explanation: Form a pair with nums[0] and nums[1] and remove them from nums. Now, nums = [].\n" +
 //                        "No more pairs can be formed. A total of 1 pair has been formed, and there are 0 numbers leftover in nums.",
 //                "1 <= nums.length <= 100\n" +
-//                        "0 <= nums[i] <= 100","[0]$[1,3,2,1,3,2,2]$[1,1]","[0,1]$[3,1]$[1,0]","1.00","6000000"));
+//                        "0 <= nums[i] <= 100","[0]$[1,3,2,1,3,2,2]$[1,1]","[0,1]$[3,1]$[1,0]","1.00","6000000",""));
         for (int i = 0; i < splitStr.length; i++) {
-            database.getReference().child("Admins").child(adminid).child("questions").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("Question").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                     if(snapshot.exists())
                     {
                         QuestionModel model1 = snapshot.getValue(QuestionModel.class);
+//                        Toast.makeText(getApplicationContext(), ""+model1.getAvgtime(), Toast.LENGTH_SHORT).show();
                         list.add(model1);
                         adapter.notifyDataSetChanged();
 

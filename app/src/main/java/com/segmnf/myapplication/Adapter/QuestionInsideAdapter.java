@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.segmnf.myapplication.ContestQuestionActivity;
+import com.segmnf.myapplication.ContestQuestionDetailActivity;
 import com.segmnf.myapplication.Model.ContestModel;
 import com.segmnf.myapplication.Model.QuestionModel;
 import com.segmnf.myapplication.R;
@@ -53,12 +54,41 @@ public class QuestionInsideAdapter extends RecyclerView.Adapter<QuestionInsideAd
         holder.name.setText(model.getName());
         holder.difficulty.setText(model.getDifficulty());
         holder.marks.setText("Scores: "+model.getMarks());
+        if(model.getStatus().equals("")){
+            holder.status.setText("Not accepted");
+        }
+        else
+            holder.status.setText(model.getStatus());
 
 
+
+
+        String constraints;
+        String testcases;
+        String testoutputs;
+        String cpu;
+        String memory;
+        String status;
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ContestQuestionDetailActivity.class);
+                intent.putExtra("contestid", model.getContestid());
+                intent.putExtra("avgtime", model.getAvgtime());
+                intent.putExtra("name", model.getName());
+                intent.putExtra("difficulty", model.getDifficulty());
+                intent.putExtra("eg1", model.getEg1());
+                intent.putExtra("eg1", model.getEg2());
+                intent.putExtra("marks", model.getMarks());
+                intent.putExtra("description", model.getDescription());
+                intent.putExtra("constraints", model.getConstraints());
+                intent.putExtra("testcases", model.getTestcases());
+                intent.putExtra("testoutput", model.getTestoutputs());
+                intent.putExtra("cpu", model.getCpu());
+                intent.putExtra("memory", model.getMemory());
+                intent.putExtra("status", model.getStatus());
 
+                v.getContext().startActivity(intent);
             }
         });
 

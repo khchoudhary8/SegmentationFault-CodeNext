@@ -12,8 +12,9 @@ public class ContestModel {
     String end;
     String qid;
     String adminid;
+    String score;
 
-    public ContestModel(String name, String date, String duration, String questions, String marks, String id, String start, String end, String qid, String adminid) {
+    public ContestModel(String name, String date, String duration, String questions, String marks, String id, String start, String end, String qid, String adminid, String score) {
         this.name = name;
         this.date = date;
         this.duration = duration;
@@ -24,9 +25,18 @@ public class ContestModel {
         this.end = end;
         this.qid = qid;
         this.adminid = adminid;
+        this.score= score;
     }
 
     public ContestModel() {
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 
     public String getQid() {

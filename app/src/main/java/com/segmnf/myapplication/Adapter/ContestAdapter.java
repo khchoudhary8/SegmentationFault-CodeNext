@@ -16,9 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.segmnf.myapplication.ContestQuestionActivity;
 import com.segmnf.myapplication.Model.ContestModel;
+import com.segmnf.myapplication.Model.QuestionModel;
 import com.segmnf.myapplication.R;
 
 import java.text.ParseException;
@@ -127,18 +134,68 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
                             }
                             if (date_from.before(dateNow) && date_to.after(dateNow)) {
                                 Toast.makeText(v.getContext(), "Starting Now.", Toast.LENGTH_SHORT).show();
+                                String[] splitStr = model.getQid().trim().split("\\s+");
 
+                                database.getReference().child("Contests").child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(model.getId()).setValue(snapshot.getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                if (task.isComplete())
 
-                                Intent intent = new Intent(v.getContext(), ContestQuestionActivity.class);
-                                intent.putExtra("qid", model.getQid());
-                                intent.putExtra("duration", model.getDuration());
-                                intent.putExtra("name", model.getDate());
-                                intent.putExtra("id", model.getId());
-                                intent.putExtra("adminid", model.getAdminid());
+                                            }
+                                        });
 
-                                v.getContext().startActivity(intent);
+                                    }
 
-                                dialog.dismiss();
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                                for (int i = 0; i < splitStr.length; i++) {
+                                    int finalI = i;
+                                    database.getReference().child("Admins").child(model.getAdminid()).child("questions").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                            if(snapshot.exists())
+                                            {
+                                                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(model.getId()).child("Question").child(splitStr[finalI]).setValue(snapshot.getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isComplete())
+                                                        {
+
+                                                            Intent intent = new Intent(v.getContext(), ContestQuestionActivity.class);
+                                                            intent.putExtra("qid", model.getQid());
+                                                            intent.putExtra("duration", model.getDuration());
+                                                            intent.putExtra("name", model.getName());
+                                                            intent.putExtra("id", model.getId());
+                                                            intent.putExtra("adminid", model.getAdminid());
+
+                                                            v.getContext().startActivity(intent);
+
+                                                            dialog.dismiss();
+                                                        }
+                                                        else
+                                                            Toast.makeText(v.getContext(),"Something went wrong, Please contact developer",Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                                }
+
                             } else
                                 Toast.makeText(v.getContext(), "Contest not Started or Expired", Toast.LENGTH_SHORT).show();
                         } else {

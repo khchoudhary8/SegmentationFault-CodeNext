@@ -7,12 +7,14 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,6 +24,20 @@ import com.segmnf.myapplication.databinding.ActivityContestQuestionDetailBinding
 public class ContestQuestionDetailActivity extends AppCompatActivity {
     ActivityContestQuestionDetailBinding binding;
     private FirebaseDatabase database;
+    String contestid;
+    String name;
+    String avgtime;
+    String difficulty;
+    String marks;
+    String description;
+    String eg1;
+    String eg2;
+    String constraints;
+    String testcases;
+    String testoutputs;
+    String cpu;
+    String memory;
+    String status;
 
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
@@ -110,5 +126,81 @@ public class ContestQuestionDetailActivity extends AppCompatActivity {
                 super.onPageScrollStateChanged(state);
             }
         });
+
+        Intent intent= getIntent();
+
+        contestid= intent.getStringExtra("contestid");
+        name= intent.getStringExtra("name");
+        avgtime= intent.getStringExtra("avgtime");
+        difficulty= intent.getStringExtra("difficulty");
+        marks= intent.getStringExtra("marks");
+        description= intent.getStringExtra("description");
+        eg1= intent.getStringExtra("eg1");
+        eg2= intent.getStringExtra("eg2");
+        constraints= intent.getStringExtra("constraints");
+        testcases= intent.getStringExtra("testcases");
+        testoutputs= intent.getStringExtra("testoutput");
+        cpu= intent.getStringExtra("cpu");
+        memory= intent.getStringExtra("memory");
+        status= intent.getStringExtra("status");
+
+
     }
+
+    public String getContestid() {
+        return contestid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAvgtime() {
+        return avgtime;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public String getMarks() {
+        return marks;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getEg1() {
+        return eg1;
+    }
+
+    public String getEg2() {
+        return eg2;
+    }
+
+    public String getConstraints() {
+        return constraints;
+    }
+
+    public String getTestcases() {
+        return testcases;
+    }
+
+    public String getTestoutputs() {
+        return testoutputs;
+    }
+
+    public String getCpu() {
+        return cpu;
+    }
+
+    public String getMemory() {
+        return memory;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
 }
