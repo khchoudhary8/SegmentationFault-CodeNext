@@ -312,7 +312,7 @@
                         android:layout_marginLeft="23dp"
                         android:layout_marginTop="14dp"
                         android:id="@+id/cardFri"
-                        app:cardBackgroundColor="#AC0000"
+                        app:cardBackgroundColor="#000000"
                         app:cardCornerRadius="13dp">
 
 

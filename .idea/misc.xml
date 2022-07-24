@@ -13,6 +13,8 @@
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/drawable/bg5.xml" value="0.17" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/drawable/buttonbg.xml" value="0.173" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/drawable/custom_ripple_effect.xml" value="0.173" />
+        <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.2245" />
+        <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/drawable/ic_heart.xml" value="0.2245" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/drawable/ic_undraw_pair_programming_re_or4x.xml" value="0.173" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/activity_contest_question.xml" value="0.264" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/activity_contest_question_detail.xml" value="0.2" />
@@ -20,11 +22,12 @@
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/activity_news.xml" value="0.25416666666666665" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/activity_news_detail.xml" value="0.25416666666666665" />
-        <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/contest_cardview.xml" value="0.264" />
+        <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/contest_cardview.xml" value="0.4" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/contest_dialog.xml" value="0.264" />
+        <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/dialog_progress.xml" value="0.25416666666666665" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/fragment_contest.xml" value="0.264" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/fragment_editor.xml" value="0.25416666666666665" />
-        <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
+        <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/fragment_home.xml" value="0.4" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/fragment_ouput.xml" value="0.264" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/fragment_question.xml" value="0.2" />
         <entry key="..\:/HackAduck2/Segmentation-Fault---CodeNext-master/app/src/main/res/layout/question_row_view.xml" value="0.4" />

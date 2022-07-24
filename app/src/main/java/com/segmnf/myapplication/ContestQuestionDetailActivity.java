@@ -1,25 +1,49 @@
 package com.segmnf.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.segmnf.myapplication.Adapter.QuestionPagerAdapter;
 import com.segmnf.myapplication.databinding.ActivityContestQuestionDetailBinding;
+
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Position;
+import nl.dionsegijn.konfetti.core.Spread;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class ContestQuestionDetailActivity extends AppCompatActivity {
     ActivityContestQuestionDetailBinding binding;
@@ -38,7 +62,11 @@ public class ContestQuestionDetailActivity extends AppCompatActivity {
     String cpu;
     String memory;
     String status;
-
+    String quid;
+    Long millis;
+    int finalValue;
+    private Shape.DrawableShape drawableShape = null;
+    String duration;
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
         Window win = activity.getWindow();
@@ -143,7 +171,107 @@ public class ContestQuestionDetailActivity extends AppCompatActivity {
         cpu= intent.getStringExtra("cpu");
         memory= intent.getStringExtra("memory");
         status= intent.getStringExtra("status");
+        quid = intent.getStringExtra("questionid");
+        millis = Long.parseLong(intent.getStringExtra("millis"));
+        duration= intent.getStringExtra("duration");
 
+        CountDownTimer mCountDownTimer = new CountDownTimer(millis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                millis = millisUntilFinished;
+                binding.textView7.setText(String.format("%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished), TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+
+            }
+
+            @Override
+            public void onFinish() {
+                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("submissiontime").setValue(duration + ":00");
+                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        finalValue = Integer.parseInt(snapshot.getValue().toString());
+                        final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
+                        drawableShape = new Shape.DrawableShape(drawable, true);
+                        Dialog myDialog = new Dialog(ContestQuestionDetailActivity.this);
+                        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        myDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        myDialog.setContentView(R.layout.dialog_progress);
+                        myDialog.setCanceledOnTouchOutside(false);
+                        myDialog.setCancelable(true);
+                        KonfettiView konfettiView = myDialog.findViewById(R.id.konfettiView);
+                        myDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+
+                        myDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialogInterface) {
+
+                                KonfettiView konfettiView = myDialog.findViewById(R.id.konfettiView);
+                                final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
+                                drawableShape = new Shape.DrawableShape(drawable, true);
+
+                                EmitterConfig emitterConfig = new Emitter(2, TimeUnit.SECONDS).perSecond(30);
+                                konfettiView.start(
+                                        new PartyFactory(emitterConfig)
+                                                .angle(Angle.RIGHT - 45)
+                                                .spread(Spread.WIDE)
+                                                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                                                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                                                .setSpeedBetween(10f, 30f)
+                                                .position(new Position.Relative(0.0, 0.5))
+                                                .build(),
+                                        new PartyFactory(emitterConfig)
+                                                .angle(Angle.LEFT + 45)
+                                                .spread(Spread.WIDE)
+                                                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                                                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                                                .setSpeedBetween(10f, 30f)
+                                                .position(new Position.Relative(1.0, 0.5))
+                                                .build()
+                                );
+
+                                int initialValue = 0;
+                                TextView counting = myDialog.findViewById(R.id.textView12);
+
+
+                                ValueAnimator valueAnimator = ValueAnimator.ofInt(initialValue, finalValue);
+                                valueAnimator.setDuration(1000);
+                                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                        counting.setText("Scored: "+valueAnimator.getAnimatedValue().toString());
+                                    }
+                                });
+                                valueAnimator.start();
+                                TextView time = myDialog.findViewById(R.id.textView14);
+                                time.setText("Time: "+duration + ":00"+" mins");
+
+                            }
+                        });
+                        myDialog.show();
+                        myDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                            @Override
+                            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                    dialog.cancel();
+                                    Intent intent1 = new Intent(ContestQuestionDetailActivity.this, HomeActivity.class);
+                                    startActivity(intent1);
+                                    finishAffinity();
+                                    return true;
+                                }
+                                return false;
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        }.start();
 
     }
 
@@ -202,5 +330,10 @@ public class ContestQuestionDetailActivity extends AppCompatActivity {
     public String getStatus() {
         return status;
     }
+
+    public String getQuid() {
+        return quid;
+    }
+
 
 }

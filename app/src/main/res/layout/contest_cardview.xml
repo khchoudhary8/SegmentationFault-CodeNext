@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="20dp"
-                android:width="200dp"
+                android:maxWidth="170dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="Interview Prep 4.0"
@@ -63,12 +63,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="4dp"
+                android:visibility="invisible"
+                android:id="@+id/leaderboard"
+                android:src="@drawable/ic_leaderboard"
+                app:layout_constraintBottom_toBottomOf="@+id/contestname"
+                app:layout_constraintStart_toEndOf="@+id/contestname"
+                app:layout_constraintTop_toTopOf="@+id/contestname" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView2"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginTop="72dp"
-
                 app:cardBackgroundColor="#BABABA"
                 app:cardCornerRadius="12dp"
                 app:layout_constraintStart_toStartOf="@+id/contestname"

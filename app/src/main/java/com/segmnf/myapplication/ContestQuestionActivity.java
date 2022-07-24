@@ -1,38 +1,70 @@
 package com.segmnf.myapplication;
 
+import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.segmnf.myapplication.Adapter.ContestAdapter;
 import com.segmnf.myapplication.Adapter.QuestionInsideAdapter;
+import com.segmnf.myapplication.Model.ContestModel;
 import com.segmnf.myapplication.Model.QuestionModel;
 import com.segmnf.myapplication.databinding.ActivityContestQuestionBinding;
-import com.segmnf.myapplication.databinding.ActivityContestQuestionDetailBinding;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Position;
+import nl.dionsegijn.konfetti.core.Spread;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class ContestQuestionActivity extends AppCompatActivity {
     ActivityContestQuestionBinding binding;
     private FirebaseDatabase database;
-
+    Long millis;
+    QuestionInsideAdapter adapter;
+    String id;
+    ArrayList<QuestionModel> list = new ArrayList<>();
+    String qid;
+    String start;
+    int finalValue;
+    private Shape.DrawableShape drawableShape = null;
+    String duration;
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
         Window win = activity.getWindow();
@@ -69,16 +101,17 @@ public class ContestQuestionActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance("https://tynkr-3915c-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         Intent intent = getIntent();
-        String qid = intent.getStringExtra("qid");
+        qid = intent.getStringExtra("qid");
         String name = intent.getStringExtra("name");
-        String duration = intent.getStringExtra("duration");
-        String id = intent.getStringExtra("id");
+         duration = intent.getStringExtra("duration");
+        id = intent.getStringExtra("id");
         String adminid = intent.getStringExtra("adminid");
-        ArrayList<QuestionModel> list= new ArrayList<>();
-        QuestionInsideAdapter adapter = new QuestionInsideAdapter(list);
-        LinearLayoutManager manager = new LinearLayoutManager(ContestQuestionActivity.this, LinearLayoutManager.VERTICAL,false);
+
+        adapter = new QuestionInsideAdapter(list, ContestQuestionActivity.this);
+        LinearLayoutManager manager = new LinearLayoutManager(ContestQuestionActivity.this, LinearLayoutManager.VERTICAL, false);
         binding.questionrecycler.setLayoutManager(manager);
         binding.questionrecycler.setAdapter(adapter);
+
 
         String[] splitStr = qid.trim().split("\\s+");
 //        this.contestid = contestid;
@@ -95,7 +128,7 @@ public class ContestQuestionActivity extends AppCompatActivity {
 //        this.cpu = cpu;
 //        this.memory = memory;
 //        database.getReference().child("Admins").child(adminid).child("questions").child("23").setValue(new QuestionModel("2","Maximum Number of Pairs in Array"
-//        ,"20","Easy","10",
+//        ,"60","Hard","30",
 //                "You are given a 0-indexed integer array nums. In one operation, you may do the following:\n" +
 //                "\n" +
 //                "Choose two integers in nums that are equal.\n" +
@@ -115,17 +148,43 @@ public class ContestQuestionActivity extends AppCompatActivity {
 //                        "Explanation: Form a pair with nums[0] and nums[1] and remove them from nums. Now, nums = [].\n" +
 //                        "No more pairs can be formed. A total of 1 pair has been formed, and there are 0 numbers leftover in nums.",
 //                "1 <= nums.length <= 100\n" +
-//                        "0 <= nums[i] <= 100","[0]$[1,3,2,1,3,2,2]$[1,1]","[0,1]$[3,1]$[1,0]","1.00","6000000",""));
+//                        "0 <= nums[i] <= 100","4\n3\n1 2 3\n4\n5 5 5 5\n4\n2 2 1 1\n3\n1 1 2","2\n0\n2\n1","1.00","6000000","","23"));
+//        list.clear();
+//        for (int i = 0; i < splitStr.length; i++) {
+//            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("Question").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                    if (snapshot.exists()) {
+//                        QuestionModel model1 = snapshot.getValue(QuestionModel.class);
+////                        Toast.makeText(getApplicationContext(), ""+model1.getAvgtime(), Toast.LENGTH_SHORT).show();
+//                        list.add(model1);
+//
+//                        adapter.notifyDataSetChanged();
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
+//        }
+
+        list.clear();
+        adapter.notifyDataSetChanged();
+
         for (int i = 0; i < splitStr.length; i++) {
             database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("Question").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    if(snapshot.exists())
-                    {
+                    if (snapshot.exists()) {
                         QuestionModel model1 = snapshot.getValue(QuestionModel.class);
 //                        Toast.makeText(getApplicationContext(), ""+model1.getAvgtime(), Toast.LENGTH_SHORT).show();
                         list.add(model1);
+
                         adapter.notifyDataSetChanged();
 
                     }
@@ -136,7 +195,282 @@ public class ContestQuestionActivity extends AppCompatActivity {
 
                 }
             });
-
         }
+        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                    ContestModel contestModel = snapshot.getValue(ContestModel.class);
+                    String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                    start = contestModel.getStart();
+                    Date end = null;
+                    try {
+                        end = formatter.parse(contestModel.getEnd());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    Date dateNow = null;
+                    try {
+                        dateNow = formatter.parse(currentTime);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    CountDownTimer mCountDownTimer = new CountDownTimer(end.getTime() - dateNow.getTime(), 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            millis = millisUntilFinished;
+                            binding.timerinside.setText(String.format("%02d:%02d",
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished), TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("submissiontime").setValue(duration + ":00");
+                            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    finalValue = Integer.parseInt(snapshot.getValue().toString());
+                                    final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
+                                    drawableShape = new Shape.DrawableShape(drawable, true);
+                                    Dialog myDialog = new Dialog(ContestQuestionActivity.this);
+                                    myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                    myDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                                    myDialog.setContentView(R.layout.dialog_progress);
+                                    myDialog.setCanceledOnTouchOutside(false);
+                                    myDialog.setCancelable(true);
+                                    KonfettiView konfettiView = myDialog.findViewById(R.id.konfettiView);
+                                    myDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+
+                                    myDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                                        @Override
+                                        public void onShow(DialogInterface dialogInterface) {
+
+                                            KonfettiView konfettiView = myDialog.findViewById(R.id.konfettiView);
+                                            final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
+                                            drawableShape = new Shape.DrawableShape(drawable, true);
+
+                                            EmitterConfig emitterConfig = new Emitter(2, TimeUnit.SECONDS).perSecond(30);
+                                            konfettiView.start(
+                                                    new PartyFactory(emitterConfig)
+                                                            .angle(Angle.RIGHT - 45)
+                                                            .spread(Spread.WIDE)
+                                                            .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                                                            .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                                                            .setSpeedBetween(10f, 30f)
+                                                            .position(new Position.Relative(0.0, 0.5))
+                                                            .build(),
+                                                    new PartyFactory(emitterConfig)
+                                                            .angle(Angle.LEFT + 45)
+                                                            .spread(Spread.WIDE)
+                                                            .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                                                            .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                                                            .setSpeedBetween(10f, 30f)
+                                                            .position(new Position.Relative(1.0, 0.5))
+                                                            .build()
+                                            );
+
+                                            int initialValue = 0;
+                                            TextView counting = myDialog.findViewById(R.id.textView12);
+
+
+                                            ValueAnimator valueAnimator = ValueAnimator.ofInt(initialValue, finalValue);
+                                            valueAnimator.setDuration(1000);
+                                            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                                    counting.setText("Scored: "+valueAnimator.getAnimatedValue().toString());
+                                                }
+                                            });
+                                            valueAnimator.start();
+                                            TextView time = myDialog.findViewById(R.id.textView14);
+                                            time.setText("Time: "+duration + ":00"+" mins");
+
+                                        }
+                                    });
+                                    myDialog.show();
+                                    myDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                                        @Override
+                                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                                dialog.cancel();
+
+                                                finish();
+                                                return true;
+                                            }
+                                            return false;
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }.start();
+//
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        binding.finalSubmittt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                Date startt = null;
+                try {
+                    startt = formatter.parse(start + ":00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Date dateNow = null;
+                try {
+                    dateNow = formatter.parse(currentTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Long millis = dateNow.getTime() - startt.getTime();
+                long minutes
+                        = TimeUnit.MILLISECONDS.toMinutes(millis);
+
+                long seconds
+                        = (TimeUnit.MILLISECONDS.toSeconds(millis)
+                        % 60);
+
+
+                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("submissiontime").setValue(minutes + ":" + seconds);
+                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Toast.makeText(ContestQuestionActivity.this, ""+snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                        finalValue = Integer.parseInt(snapshot.getValue().toString());
+                        final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
+                        drawableShape = new Shape.DrawableShape(drawable, true);
+                        Dialog myDialog = new Dialog(ContestQuestionActivity.this);
+                        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        myDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        myDialog.setContentView(R.layout.dialog_progress);
+                        myDialog.setCanceledOnTouchOutside(false);
+                        myDialog.setCancelable(true);
+                        KonfettiView konfettiView = myDialog.findViewById(R.id.konfettiView);
+                        myDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+
+                        myDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialogInterface) {
+
+                                KonfettiView konfettiView = myDialog.findViewById(R.id.konfettiView);
+                                final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
+                                drawableShape = new Shape.DrawableShape(drawable, true);
+
+                                EmitterConfig emitterConfig = new Emitter(2, TimeUnit.SECONDS).perSecond(30);
+                                konfettiView.start(
+                                        new PartyFactory(emitterConfig)
+                                                .angle(Angle.RIGHT - 45)
+                                                .spread(Spread.WIDE)
+                                                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                                                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                                                .setSpeedBetween(10f, 30f)
+                                                .position(new Position.Relative(0.0, 0.5))
+                                                .build(),
+                                        new PartyFactory(emitterConfig)
+                                                .angle(Angle.LEFT + 45)
+                                                .spread(Spread.WIDE)
+                                                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                                                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                                                .setSpeedBetween(10f, 30f)
+                                                .position(new Position.Relative(1.0, 0.5))
+                                                .build()
+                                );
+
+                                int initialValue = 0;
+                                TextView counting = myDialog.findViewById(R.id.textView12);
+
+                                ValueAnimator valueAnimator = ValueAnimator.ofInt(initialValue, finalValue);
+                                valueAnimator.setDuration(1000);
+                                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                        counting.setText("Scored: "+valueAnimator.getAnimatedValue().toString());
+                                    }
+                                });
+                                valueAnimator.start();
+                                TextView time = myDialog.findViewById(R.id.textView14);
+                                time.setText("Time: "+minutes + ":" + seconds+" mins");
+
+                            }
+                        });
+                        myDialog.show();
+                        myDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                            @Override
+                            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                    dialog.cancel();
+
+                                    finish();
+                                    return true;
+                                }
+                                return false;
+                            }
+                        });
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
+    }
+
+
+    public Long getMillis() {
+        return millis;
+    }
+    public String getduration() {
+        return duration;
+    }
+
+    private void updatemillis() //Call this method to refresh time
+    {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ContestQuestionActivity.this, "" + millis, Toast.LENGTH_SHORT).show();
+                        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("millis").setValue(millis.toString());
+                    }
+
+                    ;
+                });
+            }
+        }, 0, 10000);//1000 is a Refreshing Time (1second)
+    }
+
+    @Override
+    protected void onResume() {
+
+
+        super.onResume();
     }
 }

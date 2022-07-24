@@ -33,6 +33,13 @@ public class QuestionFragment extends Fragment {
 
         ContestQuestionDetailActivity contestQuestionDetailActivity = (ContestQuestionDetailActivity) getActivity();
         binding.questionname.setText(contestQuestionDetailActivity.getName());
+        binding.avgtime.setText("Avg "+contestQuestionDetailActivity.getAvgtime()+" mins");
+        binding.difficulty.setText(contestQuestionDetailActivity.getDifficulty());
+        binding.eg1.setText(contestQuestionDetailActivity.getEg1());
+        binding.eg2.setText(contestQuestionDetailActivity.getEg2());
+        binding.constraint.setText(contestQuestionDetailActivity.getConstraints());
+        binding.quesdescription.setText(contestQuestionDetailActivity.getDescription());
+        binding.score.setText("Score: "+contestQuestionDetailActivity.getMarks());
 
         return binding.getRoot();
 

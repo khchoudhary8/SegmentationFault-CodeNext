@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.segmnf.myapplication.ContestQuestionDetailActivity;
 import com.segmnf.myapplication.Utils.SyntaxHighlighter;
 import com.segmnf.myapplication.databinding.FragmentEditorBinding;
 import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
@@ -55,6 +56,11 @@ public class EditorFragment extends Fragment {
         binding = FragmentEditorBinding.inflate(inflater);
         database = FirebaseDatabase.getInstance("https://tynkr-3915c-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
+        ContestQuestionDetailActivity contestQuestionDetailActivity = (ContestQuestionDetailActivity) getActivity();
+
+//        for(int i =0; i< testcases.length;i++)
+//            Toast.makeText(getContext(), ""+testcases[i], Toast.LENGTH_SHORT).show();
+
 
         binding.codeView.setTextHighlighted(cppCode);
         SyntaxHighlighter.applyMonokaiTheme(getContext(), binding.codeView);
@@ -72,6 +78,7 @@ public class EditorFragment extends Fragment {
         binding.codeView.setTabLength(4);
         binding.codeView.setEnableAutoIndentation(true);
         binding.codeView.setMatchingHighlightColor(Color.parseColor("#BABABA"));
+
 
         binding.spinner.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
             @Override public void onItemSelected(int oldIndex, @Nullable String oldItem, int newIndex, String newItem) {
@@ -107,7 +114,6 @@ public class EditorFragment extends Fragment {
 
             }
         });
-
 
 
         return binding.getRoot();

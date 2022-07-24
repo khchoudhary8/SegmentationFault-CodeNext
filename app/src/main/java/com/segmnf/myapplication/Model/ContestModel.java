@@ -13,8 +13,10 @@ public class ContestModel {
     String qid;
     String adminid;
     String score;
+    String millis;
+    String submissiontime;
 
-    public ContestModel(String name, String date, String duration, String questions, String marks, String id, String start, String end, String qid, String adminid, String score) {
+    public ContestModel(String name, String date, String duration, String questions, String marks, String id, String start, String end, String qid, String adminid, String score, String millis, String submissiontime) {
         this.name = name;
         this.date = date;
         this.duration = duration;
@@ -25,10 +27,28 @@ public class ContestModel {
         this.end = end;
         this.qid = qid;
         this.adminid = adminid;
-        this.score= score;
+        this.score = score;
+        this.millis = millis;
+        this.submissiontime = submissiontime;
     }
 
     public ContestModel() {
+    }
+
+    public String getMillis() {
+        return millis;
+    }
+
+    public void setMillis(String millis) {
+        this.millis = millis;
+    }
+
+    public String getSubmissiontime() {
+        return submissiontime;
+    }
+
+    public void setSubmissiontime(String submissiontime) {
+        this.submissiontime = submissiontime;
     }
 
     public String getScore() {

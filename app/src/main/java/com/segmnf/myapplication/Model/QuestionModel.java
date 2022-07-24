@@ -15,8 +15,9 @@ public class QuestionModel {
     String cpu;
     String memory;
     String status;
+    String quid;
 
-    public QuestionModel(String contestid, String name, String avgtime, String difficulty, String marks, String description, String eg1, String eg2, String constraints, String testcases, String testoutputs, String cpu, String memory, String status) {
+    public QuestionModel(String contestid, String name, String avgtime, String difficulty, String marks, String description, String eg1, String eg2, String constraints, String testcases, String testoutputs, String cpu, String memory, String status, String quid) {
         this.contestid = contestid;
         this.name = name;
         this.avgtime = avgtime;
@@ -31,9 +32,18 @@ public class QuestionModel {
         this.cpu = cpu;
         this.memory = memory;
         this.status = status;
+        this.quid= quid;
     }
 
     public QuestionModel() {
+    }
+
+    public String getQuid() {
+        return quid;
+    }
+
+    public void setQuid(String quid) {
+        this.quid = quid;
     }
 
     public String getStatus() {

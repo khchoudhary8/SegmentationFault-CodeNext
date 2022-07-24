@@ -1,6 +1,7 @@
 package com.segmnf.myapplication.Adapter;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.KeyEvent;
@@ -35,9 +36,12 @@ public class QuestionInsideAdapter extends RecyclerView.Adapter<QuestionInsideAd
 
     ArrayList<QuestionModel> items;
     FirebaseDatabase database;
+    private Context mContext;
 
-    public QuestionInsideAdapter(ArrayList<QuestionModel> items) {
+
+    public QuestionInsideAdapter(ArrayList<QuestionModel> items, Context mContext) {
         this.items = items;
+        this.mContext= mContext;
     }
 
     @NonNull
@@ -54,21 +58,13 @@ public class QuestionInsideAdapter extends RecyclerView.Adapter<QuestionInsideAd
         holder.name.setText(model.getName());
         holder.difficulty.setText(model.getDifficulty());
         holder.marks.setText("Scores: "+model.getMarks());
+        holder.status.setText(model.getStatus());
         if(model.getStatus().equals("")){
             holder.status.setText("Not accepted");
         }
         else
             holder.status.setText(model.getStatus());
 
-
-
-
-        String constraints;
-        String testcases;
-        String testoutputs;
-        String cpu;
-        String memory;
-        String status;
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +74,7 @@ public class QuestionInsideAdapter extends RecyclerView.Adapter<QuestionInsideAd
                 intent.putExtra("name", model.getName());
                 intent.putExtra("difficulty", model.getDifficulty());
                 intent.putExtra("eg1", model.getEg1());
-                intent.putExtra("eg1", model.getEg2());
+                intent.putExtra("eg2", model.getEg2());
                 intent.putExtra("marks", model.getMarks());
                 intent.putExtra("description", model.getDescription());
                 intent.putExtra("constraints", model.getConstraints());
@@ -87,6 +83,11 @@ public class QuestionInsideAdapter extends RecyclerView.Adapter<QuestionInsideAd
                 intent.putExtra("cpu", model.getCpu());
                 intent.putExtra("memory", model.getMemory());
                 intent.putExtra("status", model.getStatus());
+                intent.putExtra("questionid", model.getQuid());
+                intent.putExtra("millis",((ContestQuestionActivity)mContext).getMillis().toString());
+                intent.putExtra("duration",((ContestQuestionActivity)mContext).getduration());
+
+
 
                 v.getContext().startActivity(intent);
             }
