@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:background="#002A1E"
-    android:layout_marginTop="14dp"
+    android:id="@+id/layout"
+    android:layout_marginTop="2dp"
     android:layout_height="wrap_content">
 
     <TextView
@@ -12,7 +13,7 @@
         android:text="4"
         android:id="@+id/position"
         android:textColor="@color/background2"
-        android:textSize="17dp"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cardView7"
         app:layout_constraintStart_toStartOf="parent"

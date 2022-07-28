@@ -1,4 +1,4 @@
-package com.segmnf.myapplication;
+package com.segmnf.myapplication.Adapter;
 
 
 import android.content.Intent;
@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.segmnf.myapplication.ContestQuestionDetailActivity;
 import com.segmnf.myapplication.Model.NewsModel;
+import com.segmnf.myapplication.R;
 
 
 import java.util.ArrayList;

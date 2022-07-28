@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
         TextView contests = view.findViewById(R.id.contestsdone);
 
 
+
         database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
