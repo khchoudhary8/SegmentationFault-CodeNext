@@ -15,8 +15,9 @@ public class ContestModel {
     String score;
     String millis;
     String submissiontime;
+    String tough;
 
-    public ContestModel(String name, String date, String duration, String questions, String marks, String id, String start, String end, String qid, String adminid, String score, String millis, String submissiontime) {
+    public ContestModel(String name, String date, String duration, String questions, String marks, String id, String start, String end, String qid, String adminid, String score, String millis, String submissiontime, String tough) {
         this.name = name;
         this.date = date;
         this.duration = duration;
@@ -30,6 +31,7 @@ public class ContestModel {
         this.score = score;
         this.millis = millis;
         this.submissiontime = submissiontime;
+        this.tough = tough;
     }
 
     public ContestModel() {
@@ -137,5 +139,13 @@ public class ContestModel {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+
+    public String getTough() {
+        return tough;
+    }
+
+    public void setTough(String tough) {
+        this.tough = tough;
     }
 }

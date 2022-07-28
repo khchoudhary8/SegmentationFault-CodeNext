@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.segmnf.myapplication.Adapter.QuestionInsideAdapter;
 import com.segmnf.myapplication.Model.ContestModel;
 import com.segmnf.myapplication.Model.QuestionModel;
+import com.segmnf.myapplication.Utils.LeaderboardModel;
 import com.segmnf.myapplication.databinding.ActivityContestQuestionBinding;
 
 import java.text.ParseException;
@@ -58,7 +59,7 @@ public class ContestQuestionActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     Long millis;
     QuestionInsideAdapter adapter;
-    String id;
+    String contestid;
     ArrayList<QuestionModel> list = new ArrayList<>();
     String qid;
     String start;
@@ -103,8 +104,8 @@ public class ContestQuestionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         qid = intent.getStringExtra("qid");
         String name = intent.getStringExtra("name");
-         duration = intent.getStringExtra("duration");
-        id = intent.getStringExtra("id");
+        duration = intent.getStringExtra("duration");
+        contestid = intent.getStringExtra("id");
         String adminid = intent.getStringExtra("adminid");
 
         adapter = new QuestionInsideAdapter(list, ContestQuestionActivity.this);
@@ -176,7 +177,7 @@ public class ContestQuestionActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         for (int i = 0; i < splitStr.length; i++) {
-            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("Question").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("Question").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -196,7 +197,7 @@ public class ContestQuestionActivity extends AppCompatActivity {
                 }
             });
         }
-        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -229,10 +230,14 @@ public class ContestQuestionActivity extends AppCompatActivity {
 
                         @Override
                         public void onFinish() {
-                            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("submissiontime").setValue(duration + ":00");
-                            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
+                            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("submissiontime").setValue(duration + ":00");
+
+                            database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    database.getReference().child("LeaderBoard").child(contestid).child(FirebaseAuth.getInstance().getUid()).
+                                            setValue(new LeaderboardModel(FirebaseAuth.getInstance().getUid(), snapshot.getValue().toString(), duration + ":00"));
+
                                     finalValue = Integer.parseInt(snapshot.getValue().toString());
                                     final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
                                     drawableShape = new Shape.DrawableShape(drawable, true);
@@ -282,12 +287,12 @@ public class ContestQuestionActivity extends AppCompatActivity {
                                             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                                 @Override
                                                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                                                    counting.setText("Scored: "+valueAnimator.getAnimatedValue().toString());
+                                                    counting.setText("Scored: " + valueAnimator.getAnimatedValue().toString());
                                                 }
                                             });
                                             valueAnimator.start();
                                             TextView time = myDialog.findViewById(R.id.textView14);
-                                            time.setText("Time: "+duration + ":00"+" mins");
+                                            time.setText("Time: " + duration + ":00" + " mins");
 
                                         }
                                     });
@@ -352,11 +357,13 @@ public class ContestQuestionActivity extends AppCompatActivity {
                         % 60);
 
 
-                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("submissiontime").setValue(minutes + ":" + seconds);
-                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
+                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("submissiontime").setValue(minutes + ":" + seconds);
+                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Toast.makeText(ContestQuestionActivity.this, ""+snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                        database.getReference().child("LeaderBoard").child(contestid).child(FirebaseAuth.getInstance().getUid()).
+                                setValue(new LeaderboardModel(FirebaseAuth.getInstance().getUid(), snapshot.getValue().toString(), minutes + ":" + seconds));
+                        Toast.makeText(ContestQuestionActivity.this, "" + snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
                         finalValue = Integer.parseInt(snapshot.getValue().toString());
                         final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
                         drawableShape = new Shape.DrawableShape(drawable, true);
@@ -405,12 +412,12 @@ public class ContestQuestionActivity extends AppCompatActivity {
                                 valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                     @Override
                                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                                        counting.setText("Scored: "+valueAnimator.getAnimatedValue().toString());
+                                        counting.setText("Scored: " + valueAnimator.getAnimatedValue().toString());
                                     }
                                 });
                                 valueAnimator.start();
                                 TextView time = myDialog.findViewById(R.id.textView14);
-                                time.setText("Time: "+minutes + ":" + seconds+" mins");
+                                time.setText("Time: " + minutes + ":" + seconds + " mins");
 
                             }
                         });
@@ -445,6 +452,7 @@ public class ContestQuestionActivity extends AppCompatActivity {
     public Long getMillis() {
         return millis;
     }
+
     public String getduration() {
         return duration;
     }
@@ -458,7 +466,7 @@ public class ContestQuestionActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(ContestQuestionActivity.this, "" + millis, Toast.LENGTH_SHORT).show();
-                        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(id).child("millis").setValue(millis.toString());
+                        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("millis").setValue(millis.toString());
                     }
 
                     ;
@@ -467,10 +475,4 @@ public class ContestQuestionActivity extends AppCompatActivity {
         }, 0, 10000);//1000 is a Refreshing Time (1second)
     }
 
-    @Override
-    protected void onResume() {
-
-
-        super.onResume();
-    }
 }

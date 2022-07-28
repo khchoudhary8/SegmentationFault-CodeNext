@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.segmnf.myapplication.Adapter.QuestionPagerAdapter;
+import com.segmnf.myapplication.Utils.LeaderboardModel;
 import com.segmnf.myapplication.databinding.ActivityContestQuestionDetailBinding;
 
 import java.util.Arrays;
@@ -190,6 +191,8 @@ public class ContestQuestionDetailActivity extends AppCompatActivity {
                 database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        database.getReference().child("LeaderBoard").child(contestid).child(FirebaseAuth.getInstance().getUid()).
+                                setValue(new LeaderboardModel(FirebaseAuth.getInstance().getUid(), snapshot.getValue().toString(), duration + ":00"));
                         finalValue = Integer.parseInt(snapshot.getValue().toString());
                         final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
                         drawableShape = new Shape.DrawableShape(drawable, true);

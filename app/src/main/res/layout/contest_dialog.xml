@@ -156,7 +156,7 @@
                     android:textSize="14sp" />
 
                 <View
-                    android:layout_width="0.9dp"
+                    android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:background="#BABABA" />
@@ -178,8 +178,30 @@
 
 
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
 
+                android:background="#BABABA" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:background="@color/black"
+                android:id="@+id/leaderboardbutton"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="9dp"
+                android:text="LeaderBoard"
+                android:textColor="#BABABA"
+                android:textSize="14sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
 
+                android:background="#BABABA" />
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -189,7 +211,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="249dp" />
+        app:layout_constraintGuide_begin="341dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"

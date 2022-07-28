@@ -3,6 +3,7 @@ package com.segmnf.myapplication.Fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.segmnf.myapplication.Adapter.LeaderboardAdpater;
 import com.segmnf.myapplication.ContestQuestionDetailActivity;
+import com.segmnf.myapplication.NewsActivity;
 import com.segmnf.myapplication.R;
 import com.segmnf.myapplication.Model.UserModel;
+import com.segmnf.myapplication.Utils.LeaderboardModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class HomeFragment extends Fragment {
@@ -36,7 +44,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-
+        ArrayList<LeaderboardModel> list = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,7 +91,7 @@ public class HomeFragment extends Fragment {
             news.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), ContestQuestionDetailActivity.class);
+                    Intent intent = new Intent(getContext(), NewsActivity.class);
                     startActivity(intent);
                 }
             });
@@ -121,6 +129,8 @@ public class HomeFragment extends Fragment {
                 break;
 
         }
+
         return view;
     }
+
 }

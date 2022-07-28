@@ -1,6 +1,7 @@
 package com.segmnf.myapplication.Adapter;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.KeyEvent;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.segmnf.myapplication.ContestQuestionActivity;
 import com.segmnf.myapplication.Model.ContestModel;
 import com.segmnf.myapplication.R;
+import com.segmnf.myapplication.Utils.LeaderboardModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +44,9 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
     ArrayList<Integer> cardbg = new ArrayList<>();
     ArrayList<Integer> cardimg = new ArrayList<>();
     private Random randomGenerator, random;
+    boolean flag = false;
+    ArrayList<LeaderboardModel> list = new ArrayList<>();
+
 
     public ContestAdapter(ArrayList<ContestModel> items, ArrayList<Integer> cardbg, ArrayList<Integer> cardimg) {
         this.items = items;
@@ -58,6 +64,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
 
     @Override
     public void onBindViewHolder(@NonNull ContestAdapter.Hold holder, int position) {
+
         database = FirebaseDatabase.getInstance("https://tynkr-3915c-default-rtdb.asia-southeast1.firebasedatabase.app/");
         ContestModel model = items.get(position);
         holder.name.setText(model.getName());
@@ -74,10 +81,50 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         if (model.getId().equals("112")) {
             holder.parent.setVisibility(View.INVISIBLE);
         }
+        holder.tough.setText(model.getTough());
         database.getReference().child("LeaderBoard").child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat dateformatter = new SimpleDateFormat("dd MMM");
+                String currentDate = new SimpleDateFormat("dd MMM", Locale.getDefault()).format(new Date());
+                String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                if (currentDate.equals(model.getDate())) {
+                    Date date_to = null;
+                    try {
+                        date_to = formatter.parse(model.getEnd());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date dateNow = null;
+                    try {
+                        dateNow = formatter.parse(currentTime);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (dateNow.after(date_to)) {
+                        flag = true;
+                    }
+                } else {
+                    Date from = null;
+                    try {
+                        from = dateformatter.parse(model.getDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date today = null;
+                    try {
+                        today = dateformatter.parse(currentDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (today.after(from))
+                        flag = true;
+
+                }
+                if (snapshot.exists() && flag == true) {
                     holder.cardLeader.setVisibility(View.VISIBLE);
                 }
             }
@@ -92,6 +139,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(model.getId()).child("submissiontime").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -154,91 +202,13 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
                                                 String[] splitStr = model.getQid().trim().split("\\s+");
 
 
-                                                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                Intent intent = new Intent(v.getContext(), ContestQuestionActivity.class);
+                                                intent.putExtra("qid", model.getQid());
+                                                intent.putExtra("duration", model.getDuration());
+                                                intent.putExtra("name", model.getName());
+                                                intent.putExtra("id", model.getId());
+                                                intent.putExtra("adminid", model.getAdminid());
 
-                                                        if (snapshot.exists()) {
-
-                                                            Intent intent = new Intent(v.getContext(), ContestQuestionActivity.class);
-                                                            intent.putExtra("qid", model.getQid());
-                                                            intent.putExtra("duration", model.getDuration());
-                                                            intent.putExtra("name", model.getName());
-                                                            intent.putExtra("id", model.getId());
-                                                            intent.putExtra("adminid", model.getAdminid());
-
-                                                            v.getContext().startActivity(intent);
-
-                                                            dialog.dismiss();
-                                                        } else {
-                                                            database.getReference().child("Contests").child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                @Override
-                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                    database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(model.getId()).setValue(snapshot.getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isComplete()) {
-                                                                                for (int i = 0; i < splitStr.length; i++) {
-                                                                                    int finalI = i;
-                                                                                    database.getReference().child("Admins").child(model.getAdminid()).child("questions").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                                        @Override
-                                                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                                                                            if (snapshot.exists()) {
-                                                                                                database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(model.getId()).child("Question").child(splitStr[finalI]).setValue(snapshot.getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                                    @Override
-                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                        if (task.isComplete()) {
-
-                                                                                                            Intent intent = new Intent(v.getContext(), ContestQuestionActivity.class);
-                                                                                                            intent.putExtra("qid", model.getQid());
-                                                                                                            intent.putExtra("duration", model.getDuration());
-                                                                                                            intent.putExtra("name", model.getName());
-                                                                                                            intent.putExtra("id", model.getId());
-                                                                                                            intent.putExtra("adminid", model.getAdminid());
-
-                                                                                                            v.getContext().startActivity(intent);
-
-                                                                                                            dialog.dismiss();
-                                                                                                        } else
-                                                                                                            Toast.makeText(v.getContext(), "Something went wrong, Please contact developer", Toast.LENGTH_SHORT).show();
-                                                                                                    }
-                                                                                                });
-
-                                                                                            }
-                                                                                        }
-
-                                                                                        @Override
-                                                                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                                                                        }
-                                                                                    });
-
-                                                                                }
-
-                                                                            }
-
-                                                                        }
-                                                                    });
-
-                                                                }
-
-                                                                @Override
-                                                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                                                }
-                                                            });
-
-
-                                                        }
-
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                    }
-                                                });
 
                                             } else
                                                 Toast.makeText(v.getContext(), "Contest not Started or Expired", Toast.LENGTH_SHORT).show();
@@ -440,11 +410,10 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
 
                     }
                 });
-
+            }
 //
 
 
-            }
         });
 
 
@@ -454,10 +423,55 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
     public int getItemCount() {
         return items.size();
     }
+//    database.getReference().child("LeaderBoard").child(contestModel.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+//        @Override
+//        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+//                list.add(snapshot1.getValue(LeaderboardModel.class));
+//            }
+//        }
+//
+//        @Override
+//        public void onCancelled(@NonNull DatabaseError error) {
+//
+//        }
+//    });
+//    LeaderboardAdpater adapter = new LeaderboardAdpater(list);
+//    LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
+//                recyclerView.setLayoutManager(manager);
+//                recyclerView.setAdapter(adapter);
+
+
+    public void ShowDialogForLeaderboard( Context context, ContestModel contestModel){
+        Dialog myDialog = new Dialog(context);
+        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        myDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        myDialog.setContentView(R.layout.leaderboard_dialog);
+        myDialog.setCanceledOnTouchOutside(false);
+        myDialog.setCancelable(true);
+        RecyclerView recyclerView = myDialog.findViewById(R.id.leaderboardrecyccler);
+        myDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+        myDialog.setOnShowListener(dialogInterface -> {
+        });
+        myDialog.show();
+        myDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog.cancel();
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+    }
 
     public class Hold extends RecyclerView.ViewHolder {
-        TextView name, marks, duration, date, questions, start, end;
-        ImageView cardimage,cardLeader;
+        TextView name, marks, duration, date, questions, start, end, tough;
+        ImageView cardimage, cardLeader;
         ImageView card;
         CardView parent;
 
@@ -472,6 +486,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
             cardimage = itemView.findViewById(R.id.imagecontest);
             parent = itemView.findViewById(R.id.cardparent);
             cardLeader = itemView.findViewById(R.id.leaderboard);
+            tough = itemView.findViewById(R.id.difficultycardzz);
 
 
         }
