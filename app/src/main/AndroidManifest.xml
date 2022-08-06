@@ -15,28 +15,58 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ContestQuestionActivity"
-            android:launchMode="singleTask"
+            android:name=".LearnJavascriptActivity"
             android:exported="false" />
+        <activity
+            android:name=".LearnRubyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LearnCSharpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LearnPyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LearnCActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LearnCppActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LearnJavaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".QuizQuestionActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ContestQuestionActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ContestQuestionDetailActivity"
-            android:launchMode="singleTask"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".NewsDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".NewsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".UserDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".GetStartedActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,7 +75,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

@@ -58,7 +58,7 @@
             android:layout_marginRight="18dp"
             app:cardBackgroundColor="#0079DA"
             android:layout_marginLeft="20dp"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="6dp"
             android:layout_marginTop="8dp"
                 android:layout_marginBottom="14dp"
             app:layout_constraintBottom_toBottomOf="@+id/questionname"

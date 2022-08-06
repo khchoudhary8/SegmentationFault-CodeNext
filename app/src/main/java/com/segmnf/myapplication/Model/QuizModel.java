@@ -17,9 +17,12 @@ public class QuizModel {
     String end;
     String date;
     String submittime;
+    String isresultvisible;
 
+    public QuizModel() {
+    }
 
-    public QuizModel(String adminid, String quizid, String name, String topic, String visibility, String rules, String questioncount, String duration, String userscore, String isgiven, String difficulty, String quid, String start, String end, String date, String submittime) {
+    public QuizModel(String adminid, String quizid, String name, String topic, String visibility, String rules, String questioncount, String duration, String userscore, String isgiven, String difficulty, String quid, String start, String end, String date, String submittime, String isresultvisible) {
         this.adminid = adminid;
         this.quizid = quizid;
         this.name = name;
@@ -36,8 +39,8 @@ public class QuizModel {
         this.end = end;
         this.date = date;
         this.submittime = submittime;
+        this.isresultvisible = isresultvisible;
     }
-
 
     public String getAdminid() {
         return adminid;
@@ -165,5 +168,13 @@ public class QuizModel {
 
     public void setSubmittime(String submittime) {
         this.submittime = submittime;
+    }
+
+    public String getIsresultvisible() {
+        return isresultvisible;
+    }
+
+    public void setIsresultvisible(String isresultvisible) {
+        this.isresultvisible = isresultvisible;
     }
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="@drawable/anothergradient1"
+    android:background="@drawable/mainbg"
     tools:context=".Fragments.ContestFragment">
 
     <TextView

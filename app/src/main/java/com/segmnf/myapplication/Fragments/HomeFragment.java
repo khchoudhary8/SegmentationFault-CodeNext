@@ -3,13 +3,11 @@ package com.segmnf.myapplication.Fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -21,18 +19,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.segmnf.myapplication.Adapter.LeaderboardAdpater;
-import com.segmnf.myapplication.ContestQuestionDetailActivity;
+import com.segmnf.myapplication.LearnCActivity;
+import com.segmnf.myapplication.LearnCSharpActivity;
+import com.segmnf.myapplication.LearnCppActivity;
+import com.segmnf.myapplication.LearnJavaActivity;
+import com.segmnf.myapplication.LearnJavascriptActivity;
+import com.segmnf.myapplication.LearnPyActivity;
+import com.segmnf.myapplication.LearnRubyActivity;
+import com.segmnf.myapplication.Model.UserModel;
 import com.segmnf.myapplication.NewsActivity;
 import com.segmnf.myapplication.R;
-import com.segmnf.myapplication.Model.UserModel;
 import com.segmnf.myapplication.Utils.LeaderboardModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 
 public class HomeFragment extends Fragment {
@@ -44,7 +44,9 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-        ArrayList<LeaderboardModel> list = new ArrayList<>();
+
+    ArrayList<LeaderboardModel> list = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,16 +56,89 @@ public class HomeFragment extends Fragment {
 
         TextView name = view.findViewById(R.id.username);
         ImageView pp = view.findViewById(R.id.pp);
-        ImageView news= view.findViewById(R.id.imageView4);
+        ImageView news = view.findViewById(R.id.imageView4);
         TextView contests = view.findViewById(R.id.contestsdone);
+        TextView quizzes = view.findViewById(R.id.quizesdone);
+        CardView java = view.findViewById(R.id.java);
+        CardView c = view.findViewById(R.id.c);
+        CardView cpp = view.findViewById(R.id.cpp);
+        CardView js = view.findViewById(R.id.javascript);
+        CardView csharp = view.findViewById(R.id.csharp);
+        CardView ruby = view.findViewById(R.id.ruby);
+        CardView py = view.findViewById(R.id.py);
+
+
+
+        java.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), LearnJavaActivity.class));
+            }
+        });
+        c.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), LearnCActivity.class));
+            }
+        });
+        cpp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), LearnCppActivity.class));
+            }
+        });
+        csharp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), LearnCSharpActivity.class));
+            }
+        });
+        ruby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), LearnRubyActivity.class));
+            }
+        });
+        js.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), LearnJavascriptActivity.class));
+            }
+        });
+
+        py.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), LearnPyActivity.class));
+            }
+        });
 
 
 
         database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists())
-                    contests.setText(+snapshot.getChildrenCount()+" ");
+                if (snapshot.exists())
+                    contests.setText(+snapshot.getChildrenCount() + " ");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Quizzes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    quizzes.setText(+snapshot.getChildrenCount() + " ");
             }
 
             @Override
@@ -73,36 +148,36 @@ public class HomeFragment extends Fragment {
         });
 
         database.getReference().child("User_details").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            UserModel model = snapshot.getValue(UserModel.class);
-                            name.setText(model.getName());
-                            if(getContext()!=null)
-                            Glide.with(getContext()).load(model.getImage()).into(pp);
-                        }
-                    }
-
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            news.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), NewsActivity.class);
-                    startActivity(intent);
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    UserModel model = snapshot.getValue(UserModel.class);
+                    name.setText(model.getName());
+                    if (getContext() != null)
+                        Glide.with(getContext()).load(model.getImage()).into(pp);
                 }
-            });
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        news.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), NewsActivity.class);
+                startActivity(intent);
+            }
+        });
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         CardView card;
         switch (day) {
             case Calendar.SUNDAY:
-                 card = view.findViewById(R.id.cardSunday);
-                 card.setCardBackgroundColor(Color.parseColor("#AC0000"));
+                card = view.findViewById(R.id.cardSunday);
+                card.setCardBackgroundColor(Color.parseColor("#AC0000"));
                 break;
             case Calendar.MONDAY:
                 card = view.findViewById(R.id.cardMon);

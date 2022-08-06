@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.segmnf.myapplication.ContestQuestionDetailActivity;
 import com.segmnf.myapplication.Model.NewsModel;
+import com.segmnf.myapplication.NewsDetailActivity;
 import com.segmnf.myapplication.R;
 
 
@@ -59,7 +60,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(holder.itemView.getContext(), ContestQuestionDetailActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), NewsDetailActivity.class);
                 intent.putExtra("name", model1.getAuthor());
                 intent.putExtra("title", model1.getTitle());
                 intent.putExtra("time", model1.getDate());

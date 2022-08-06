@@ -15,7 +15,7 @@
         app:strokeColor="#959595"
         app:strokeWidth="2dp"
         android:layout_marginRight="24dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -53,7 +53,7 @@
                 android:id="@+id/contestname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:maxWidth="170dp"
                 android:ellipsize="end"
@@ -226,7 +226,7 @@
                 android:layout_height="22dp"
                 android:layout_marginRight="18dp"
                 app:cardBackgroundColor="#0079DA"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="6dp"
                 app:layout_constraintBottom_toBottomOf="@+id/leaderboard"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/contestname">
