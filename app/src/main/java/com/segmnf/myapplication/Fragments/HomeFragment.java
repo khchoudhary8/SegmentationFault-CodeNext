@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.segmnf.myapplication.AddQuizActivity;
+import com.segmnf.myapplication.AdminDashboardActivity;
 import com.segmnf.myapplication.LearnCActivity;
 import com.segmnf.myapplication.LearnCSharpActivity;
 import com.segmnf.myapplication.LearnCppActivity;
@@ -35,6 +36,7 @@ import com.segmnf.myapplication.Model.ContestModel;
 import com.segmnf.myapplication.Model.QuizModel;
 import com.segmnf.myapplication.Model.UserModel;
 import com.segmnf.myapplication.NewsActivity;
+import com.segmnf.myapplication.ProfileActivity;
 import com.segmnf.myapplication.R;
 import com.segmnf.myapplication.Utils.LeaderboardModel;
 
@@ -86,7 +88,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getContext(), AddQuizActivity.class));
+                startActivity(new Intent(getContext(), LearnJavaActivity.class));
             }
         });
         c.setOnClickListener(new View.OnClickListener() {
@@ -266,9 +268,17 @@ public class HomeFragment extends Fragment {
             }
 
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        pp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
             }
         });
         news.setOnClickListener(new View.OnClickListener() {

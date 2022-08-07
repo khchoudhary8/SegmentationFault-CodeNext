@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -354,6 +355,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.Hold> {
                                         SimpleDateFormat dateformatter = new SimpleDateFormat("dd MMM");
                                         String currentDate = new SimpleDateFormat("dd MMM", Locale.getDefault()).format(new Date());
                                         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                                        Log.d("Aasasssadsda",currentDate+"   "+model.getDate());
                                         if (currentDate.equals(model.getDate())) {
                                             Date date_to = null;
 

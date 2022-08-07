@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -31,11 +34,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.segmnf.myapplication.Adapter.QuestionAdminAdapter;
 import com.segmnf.myapplication.Model.QuizModel;
 import com.segmnf.myapplication.Model.QuizQuestionModel;
 import com.segmnf.myapplication.databinding.ActivityAddQuizBinding;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +56,7 @@ public class AddQuizActivity extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     QuizModel model;
     ArrayList<QuizQuestionModel> list = new ArrayList<>();
+    SharedPreferences prefs;
 
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
@@ -107,8 +114,12 @@ public class AddQuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 datePickerDialog = new DatePickerDialog(AddQuizActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        binding.datequiz.setText(dayOfMonth + " " + arr[month]);
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+                    {
+                        if(String.valueOf(dayOfMonth).length()==1)
+                        binding.datequiz.setText("0"+dayOfMonth + " " + arr[month]);
+                        else
+                            binding.datequiz.setText(dayOfMonth + " " + arr[month]);
                     }
                 }, year, month, days);
                 datePickerDialog.show();
@@ -150,20 +161,38 @@ public class AddQuizActivity extends AppCompatActivity {
         binding.selectquestionsquiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QuestionAdminAdapter adapter = new QuestionAdminAdapter(list);
-                database.getReference().child("Admins").child("100").child("Quizzes").addListenerForSingleValueEvent(new ValueEventListener() {
+                final String[] count = new String[1];
+                database.getReference().child("Extras").child("quiz").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                         count[0] = (snapshot.getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                QuestionAdminAdapter adapter = new QuestionAdminAdapter(list, count[0]);
+                list.clear();
+                database.getReference().child("Admins").child(FirebaseAuth.getInstance().getUid()).child("Quizzes").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                 if (snapshot1.exists()) {
                                     QuizQuestionModel model = snapshot1.getValue(QuizQuestionModel.class);
+                                    if(model.getQuizid().equals(""))
                                     list.add(model);
+
                                     adapter.notifyDataSetChanged();
                                 }
                             }
                         }
+                        if(list.size()==0)
+                            Toast.makeText(AddQuizActivity.this, "Please add questions first", Toast.LENGTH_SHORT).show();
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
@@ -180,13 +209,16 @@ public class AddQuizActivity extends AppCompatActivity {
                 TextView close = (TextView) dialog.findViewById(R.id.closequestionlist);
                 dialog.show();
 
-
-                        LinearLayoutManager manager = new LinearLayoutManager(AddQuizActivity.this, LinearLayoutManager.VERTICAL, false);
-                        recyclerView.setLayoutManager(manager);
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-
-
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                LinearLayoutManager manager = new LinearLayoutManager(AddQuizActivity.this, LinearLayoutManager.VERTICAL, false);
+                recyclerView.setLayoutManager(manager);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
 
 
                 dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
@@ -204,38 +236,69 @@ public class AddQuizActivity extends AppCompatActivity {
         binding.hostquizbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                prefs = getSharedPreferences("QuestionList", Context.MODE_PRIVATE);
+                if (binding.namequiz.getText().toString().trim().length() > 0 && binding.topicquiz.getText().toString().trim().length() > 0 &&
+                        binding.visibilityquiz.getText().toString().toLowerCase(Locale.ROOT).trim().length() > 0 && binding.rulesquiz.getText().toString().trim().length() > 0 &&
+                        binding.questioncountquiz.getText().toString().trim().length() > 0 && binding.durationquiz.getText().toString().trim().length() > 0 && binding.difficultyquiz.getText().toString().trim().length() > 0 &&
+                        binding.starttimequiz.getText().toString().trim().length() > 0 && binding.endtimequiz.getText().toString().trim().length() > 0 &&
+                        binding.datequiz.getText().toString().trim().length() > 0 &&
+                        binding.isresultvisiblequiz.getText().toString().toLowerCase(Locale.ROOT).trim().length() > 0) {
+                    database.getReference().child("Extras").child("quiz").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                int count = Integer.parseInt(snapshot.getValue().toString());
+                                database.getReference().child("Extras").child("quiz").setValue(String.valueOf(count + 1)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isComplete()) {
+                                            model = new QuizModel(FirebaseAuth.getInstance().getUid(), String.valueOf(count), binding.namequiz.getText().toString().trim(), binding.topicquiz.getText().toString().trim(),
+                                                    binding.visibilityquiz.getText().toString().toLowerCase(Locale.ROOT).trim(), binding.rulesquiz.getText().toString().trim(),
+                                                    binding.questioncountquiz.getText().toString().trim(), binding.durationquiz.getText().toString().trim(), "0", "false", binding.difficultyquiz.getText().toString().trim(),
+                                                    "", binding.starttimequiz.getText().toString().trim(), binding.endtimequiz.getText().toString().trim(),
+                                                    binding.datequiz.getText().toString().trim(),
+                                                    "0", binding.isresultvisiblequiz.getText().toString().toLowerCase(Locale.ROOT).trim());
 
+                                            Log.d("ad ", model.getQuestioncount());
+                                            String quizquesids = "";
+                                            ArrayList<String> listnew = getListProductModel("list");
+                                            if (listnew.size() == Integer.parseInt(model.getQuestioncount())) {
+                                                for (int i = 0; i < listnew.size(); i++) {
+                                                    quizquesids = quizquesids + " " + listnew.get(i);
+                                                    database.getReference().child("Admins").child(FirebaseAuth.getInstance().getUid()).child("Quizzes").child(listnew.get(i).toString()).child("quizid")
+                                                            .setValue(model.getQuizid());
+                                                }
+                                                model.setQuid(quizquesids.trim());
 
-                database.getReference().child("Extras").child("quiz").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            int count = Integer.parseInt(snapshot.getValue().toString());
-                            database.getReference().child("Extras").child("quiz").setValue(String.valueOf(count + 1)).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isComplete()) {
-                                        model = new QuizModel(FirebaseAuth.getInstance().getUid(), String.valueOf(count), binding.namequiz.toString().trim(), binding.topicquiz.toString().trim(),
-                                                binding.visibilityquiz.toString().toLowerCase(Locale.ROOT).trim(), binding.rulesquiz.toString().trim(),
-                                                binding.questioncountquiz.toString().trim(), binding.durationquiz.toString().trim(), "0", "false", binding.difficultyquiz.toString().trim(),
-                                                "", binding.starttimequiz.toString().trim(), binding.endtimequiz.toString().trim(),
-                                                binding.datequiz.toString().trim(),
-                                                "0", binding.isresultvisiblequiz.toString().toLowerCase(Locale.ROOT).trim());
-
-
+                                            }
+                                            database.getReference().child("Quizzes").child(model.getQuizid()).setValue(model);
+                                            Toast.makeText(AddQuizActivity.this, "Successful", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+                        }
+                    });
 
+                }
             }
         });
+    }
+
+    public ArrayList<String> getListProductModel(String key) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        ArrayList<String> list = gson.fromJson(prefs.getString(key, ""), type);
+        if (list == null) {
+            list = new ArrayList<String>();
+        }
+        return list;
     }
 }

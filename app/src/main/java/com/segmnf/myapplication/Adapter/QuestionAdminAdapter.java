@@ -1,34 +1,45 @@
 package com.segmnf.myapplication.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.segmnf.myapplication.ContestQuestionActivity;
-import com.segmnf.myapplication.ContestQuestionDetailActivity;
-import com.segmnf.myapplication.Model.QuestionModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.segmnf.myapplication.Model.QuizQuestionModel;
 import com.segmnf.myapplication.R;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class QuestionAdminAdapter extends RecyclerView.Adapter<QuestionAdminAdapter.Hold> {
 
     ArrayList<QuizQuestionModel> items;
     FirebaseDatabase database;
+    ArrayList<String> list1 = new ArrayList<>();
+    SharedPreferences.Editor editor;
+    SharedPreferences prefs;
+    String quiz;
 
 
-    public QuestionAdminAdapter(ArrayList<QuizQuestionModel> items) {
+    public QuestionAdminAdapter(ArrayList<QuizQuestionModel> items, String quiz) {
         this.items = items;
+        this.quiz=quiz;
 
     }
 
@@ -40,13 +51,28 @@ public class QuestionAdminAdapter extends RecyclerView.Adapter<QuestionAdminAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QuestionAdminAdapter.Hold holder, int position) {
+    public void onBindViewHolder(@NonNull QuestionAdminAdapter.Hold holder, @SuppressLint("RecyclerView") int position) {
         database = FirebaseDatabase.getInstance("https://tynkr-3915c-default-rtdb.asia-southeast1.firebasedatabase.app/");
         QuizQuestionModel model = items.get(position);
-        holder.name.setText(model.getQuestion());
-        holder.marks.setText("Scores: "+model.getMarks());
-        holder.check.isChecked();
+        prefs = holder.itemView.getContext().getSharedPreferences("QuestionList", Context.MODE_PRIVATE);
 
+        holder.name.setText(model.getQuestion());
+        holder.marks.setText("Scores: " + model.getMarks());
+        holder.check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.check.isChecked()) {
+                    list1.add(String.valueOf(model.getQuestionid()));
+                    database.getReference().child("Admin").child(FirebaseAuth.getInstance().getUid()).child("Quizzes").child(model.getQuestionid()).child("quizid").setValue(quiz);
+                } else {
+                    list1.remove(String.valueOf(model.getQuestionid()));
+                    database.getReference().child("Admin").child(FirebaseAuth.getInstance().getUid()).child("Quizzes").child(model.getQuestionid()).child("quizid").setValue("");
+
+                }
+                setListToPreferance("list" , list1);
+                Toast.makeText(holder.itemView.getContext(), "Total selections: "+list1.size(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -55,6 +81,20 @@ public class QuestionAdminAdapter extends RecyclerView.Adapter<QuestionAdminAdap
     public int getItemCount() {
         return items.size();
     }
+
+    public void setListToPreferance(String key, ArrayList<String> list) {
+        for (int i = 0; i < list.size(); i++) {
+            String model = list.get(i);
+            Log.d("list0000000", "" + model);
+        }
+
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor = prefs.edit();
+        editor.putString(key, json);
+        editor.apply();
+    }
+
 
     public class Hold extends RecyclerView.ViewHolder {
         TextView name, marks;
@@ -73,4 +113,5 @@ public class QuestionAdminAdapter extends RecyclerView.Adapter<QuestionAdminAdap
         }
 
     }
+
 }
