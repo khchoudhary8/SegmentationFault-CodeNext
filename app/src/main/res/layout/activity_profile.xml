@@ -101,7 +101,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="14dp"
                 android:maxLines="4"
-
                 android:textColor="#FFC6C6"
                 android:textSize="14dp"
                 android:textStyle="normal"
