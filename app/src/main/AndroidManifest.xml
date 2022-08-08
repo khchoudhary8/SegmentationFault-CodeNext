@@ -15,6 +15,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".AddContestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddContestQuestionActivity"
+            android:exported="false" />
+        <activity
             android:name=".Fragments.SettingBottomSheetFragment"
             android:exported="false" />
         <activity
