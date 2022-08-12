@@ -129,8 +129,7 @@ public class OuputFragment extends Fragment {
                     @Override
                     public void afterTextChanged(Editable s) {
 
-                        Log.d("cputime",""+s.toString());
-                        Log.d("cputime"," "+Double.parseDouble(binding.memtaken.getText().toString().trim())+"  "+Double.parseDouble(mem));
+
                         database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("Question").child(qid).child("status").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -140,7 +139,10 @@ public class OuputFragment extends Fragment {
                                 }
                                 else
                                 {
-                                    if(Double.parseDouble(binding.cputime.getText().toString().trim())>Double.parseDouble(cpu) ||
+                                    if(binding.cputime.getText().equals("null")){
+                                        binding.status.setText("TLE");
+                                    }
+                                    else if(Double.parseDouble(binding.cputime.getText().toString().trim())>Double.parseDouble(cpu) ||
                                             Double.parseDouble(binding.memtaken.getText().toString().trim())>Double.parseDouble(mem)){
                                         binding.status.setText("TLE");
                                     }

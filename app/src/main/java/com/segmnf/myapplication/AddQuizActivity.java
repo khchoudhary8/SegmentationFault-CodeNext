@@ -36,7 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.segmnf.myapplication.Adapter.QuestionAdminAdapter;
+import com.segmnf.myapplication.Adapter.QuestionAdminQuizAdapter;
 import com.segmnf.myapplication.Model.QuizModel;
 import com.segmnf.myapplication.Model.QuizQuestionModel;
 import com.segmnf.myapplication.databinding.ActivityAddQuizBinding;
@@ -173,7 +173,7 @@ public class AddQuizActivity extends AppCompatActivity {
 
                     }
                 });
-                QuestionAdminAdapter adapter = new QuestionAdminAdapter(list, count[0]);
+                QuestionAdminQuizAdapter adapter = new QuestionAdminQuizAdapter(list, count[0]);
                 list.clear();
                 database.getReference().child("Admins").child(FirebaseAuth.getInstance().getUid()).child("Quizzes").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

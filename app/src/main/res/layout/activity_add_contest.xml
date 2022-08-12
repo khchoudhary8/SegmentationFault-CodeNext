@@ -71,13 +71,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
                         android:layout_marginTop="30dp"
-                        android:text="Quiz Name"
+                        android:text="Contest Name"
                         android:textColor="@color/white"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/namequiz"
+                        android:id="@+id/namecontest"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginLeft="24dp"
@@ -119,209 +119,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
                         android:layout_marginTop="15dp"
-                        android:text="Quiz Topic"
+                        android:text="Contest Duration"
                         android:textColor="@color/white"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/topicquiz"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="24dp"
-                        android:background="@drawable/buttonbg"
-                        android:backgroundTint="#75BFB8"
-                        android:hint="topic"
-                        android:inputType="textCapSentences"
-                        android:paddingLeft="14dp"
-                        android:paddingRight="20dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/AppTextColour"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewdc81davesf" />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="15dp"
-                        android:alpha="0.3"
-                        android:background="#DB989797"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/namequiz" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Quiz Visibility"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/visibilityquiz"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="24dp"
-                        android:background="@drawable/buttonbg"
-                        android:backgroundTint="#75BFB8"
-                        android:hint="true/ false"
-                        android:inputType="textCapSentences"
-                        android:paddingLeft="14dp"
-                        android:paddingRight="20dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/AppTextColour"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewdc81davesf" />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="15dp"
-                        android:alpha="0.3"
-                        android:background="#DB989797"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/namequiz" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Quiz Rules"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/rulesquiz"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="10dp"
-                        android:maxLines="5"
-                        android:paddingBottom="14dp"
-                        android:paddingTop="14dp"
-                        android:layout_marginRight="24dp"
-                        android:background="@drawable/buttonbg"
-                        android:backgroundTint="#75BFB8"
-                        android:hint="rules"
-                        android:gravity="top|left"
-                        android:inputType="textMultiLine"
-                        android:paddingLeft="14dp"
-                        android:paddingRight="20dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/AppTextColour"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewdc81davesf" />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="15dp"
-                        android:alpha="0.3"
-                        android:background="#DB989797"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/namequiz" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Question Count"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/questioncountquiz"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="24dp"
-                        android:background="@drawable/buttonbg"
-                        android:backgroundTint="#75BFB8"
-                        android:hint="enter a number"
-                        android:inputType="textCapSentences"
-                        android:paddingLeft="14dp"
-                        android:paddingRight="20dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/AppTextColour"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewdc81davesf" />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="15dp"
-                        android:alpha="0.3"
-                        android:background="#DB989797"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/namequiz" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Time Per Question"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/durationquiz"
+                        android:id="@+id/contestdurationadd"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginLeft="24dp"
@@ -363,13 +167,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
                         android:layout_marginTop="15dp"
-                        android:text="Quiz Difficulty"
+                        android:text="Contest Average Difficulty"
                         android:textColor="@color/white"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/difficultyquiz"
+                        android:id="@+id/difficultycontest"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginLeft="24dp"
@@ -400,6 +204,59 @@
                         app:layout_constraintTop_toBottomOf="@+id/namequiz" />
                 </LinearLayout>
 
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Question Count"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/questioncountcontest"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="24dp"
+                        android:background="@drawable/buttonbg"
+                        android:backgroundTint="#75BFB8"
+                        android:hint="enter a number"
+                        android:inputType="textCapSentences"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="20dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/AppTextColour"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewdc81davesf" />
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="15dp"
+                        android:alpha="0.3"
+                        android:background="#DB989797"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/namequiz" />
+                </LinearLayout>
+
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -417,7 +274,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/selectquestionsquiz"
+                        android:id="@+id/selectquestionscontest"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginLeft="24dp"
@@ -466,7 +323,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/endtimequiz"
+                        android:id="@+id/endtimecontest"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginLeft="24dp"
@@ -475,7 +332,7 @@
                         android:background="@drawable/buttonbg"
                         android:backgroundTint="#75BFB8"
                         android:focusable="false"
-                        android:hint="need not specify if visibility true"
+                        android:hint="choose"
                         android:inputType="textCapSentences"
                         android:paddingLeft="14dp"
                         android:paddingRight="20dp"
@@ -509,13 +366,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
                         android:layout_marginTop="15dp"
-                        android:text="Quiz Date"
+                        android:text="Contest Date"
                         android:textColor="@color/white"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/datequiz"
+                        android:id="@+id/datecontest"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginLeft="24dp"
@@ -563,7 +420,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/starttimequiz"
+                        android:id="@+id/starttimecontest"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginLeft="24dp"
@@ -594,47 +451,10 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/namequiz" />
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Show Results?"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/isresultvisiblequiz"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="24dp"
-                        android:background="@drawable/buttonbg"
-                        android:backgroundTint="#75BFB8"
-                        android:hint="true/ false"
-                        android:inputType="textCapSentences"
-                        android:paddingLeft="14dp"
-                        android:paddingRight="20dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/AppTextColour"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewdc81davesf" />
-
-
-                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/hostquizbutton"
+                    android:id="@+id/hostcontestbutton"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_margin="30dp"

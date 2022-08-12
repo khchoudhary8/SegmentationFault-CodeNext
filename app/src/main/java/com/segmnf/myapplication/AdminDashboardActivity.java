@@ -79,5 +79,17 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminDashboardActivity.this, AddQuizQuestion.class));
             }
         });
+        binding.addcontestquest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AdminDashboardActivity.this, AddContestQuestionActivity.class));
+            }
+        });
+        binding.createcontest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AdminDashboardActivity.this, AddContestActivity.class));
+            }
+        });
     }
 }

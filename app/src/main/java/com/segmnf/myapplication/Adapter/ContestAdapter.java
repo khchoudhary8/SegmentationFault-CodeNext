@@ -85,7 +85,19 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         if (model.getId().equals("112")) {
             holder.parent.setVisibility(View.INVISIBLE);
         }
-        holder.tough.setText(model.getTough());
+        if(model.getTough().toLowerCase(Locale.ROOT).equals("hard")){
+            holder.tough.setText("Hard");
+
+        }
+        else if(model.getTough().toLowerCase(Locale.ROOT).equals("medium")){
+            holder.tough.setText("Medium");
+
+        }
+       else if(model.getTough().toLowerCase(Locale.ROOT).equals("easy")){
+            holder.tough.setText("Easy");
+
+        }
+
 
         database.getReference().child("LeaderBoard").child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

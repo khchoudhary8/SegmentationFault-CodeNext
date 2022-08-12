@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -143,6 +144,11 @@ public class QuizQuestionActivity extends AppCompatActivity {
                     binding.option2.setText("B. " + model.getOp2());
                     binding.option3.setText("C. " + model.getOp3());
                     binding.option4.setText("D. " + model.getOp4());
+                    if(model.getImage().trim().length()>1)
+                    {
+                        Glide.with(binding.imageView11).load(model.getImage()).into(binding.imageView11);
+                        binding.imageView11.setVisibility(View.VISIBLE);
+                    }
                     binding.submitthisquestion.setText("Next");
                     binding.questionnumber.setText(String.valueOf(i + 1));
 
@@ -217,6 +223,7 @@ public class QuizQuestionActivity extends AppCompatActivity {
     private void Clickfn() {
         if (list.size() > i) {
             countDownTimer.cancel();
+            binding.imageView11.setVisibility(View.GONE);
             String correctoption = list.get(i).getCorrectop();
 
             if (selectedoption.equals(correctoption)) {
@@ -332,6 +339,11 @@ public class QuizQuestionActivity extends AppCompatActivity {
                                             binding.quizquestiondisplay.setText(model.getQuestion());
                                             binding.points.setText("Points: " + model.getMarks());
                                             binding.option1.setText("A. " + model.getOp1());
+                                            if(model.getImage().trim().length()>1)
+                                            {
+                                                Glide.with(binding.imageView11).load(model.getImage()).into(binding.imageView11);
+                                                binding.imageView11.setVisibility(View.VISIBLE);
+                                            }
                                             binding.option2.setText("B. " + model.getOp2());
                                             binding.option3.setText("C. " + model.getOp3());
                                             binding.option4.setText("D. " + model.getOp4());
@@ -340,6 +352,7 @@ public class QuizQuestionActivity extends AppCompatActivity {
 
                                         }
                                         if (i + 1 == list.size()) {
+
                                             binding.submitthisquestion.setText("Submit");
                                         }
                                     }
@@ -457,6 +470,11 @@ public class QuizQuestionActivity extends AppCompatActivity {
 
                 } else if (i < list.size()) {
                     QuizQuestionModel model = list.get(i);
+                    if(model.getImage().trim().length()>1)
+                    {
+                        Glide.with(binding.imageView11).load(model.getImage()).into(binding.imageView11);
+                        binding.imageView11.setVisibility(View.VISIBLE);
+                    }
                     binding.quizquestiondisplay.setText(model.getQuestion());
                     binding.points.setText("Points: " + model.getMarks());
                     binding.option1.setText("A. " + model.getOp1());

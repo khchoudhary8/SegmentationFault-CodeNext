@@ -173,6 +173,36 @@ public class ContestQuestionActivity extends AppCompatActivity {
 //            });
 //        }
 
+        binding.refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                list.clear();
+                adapter.notifyDataSetChanged();
+
+                for (int i = 0; i < splitStr.length; i++) {
+                    database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("Question").child(splitStr[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            if (snapshot.exists()) {
+                                QuestionModel model1 = snapshot.getValue(QuestionModel.class);
+//                        Toast.makeText(getApplicationContext(), ""+model1.getAvgtime(), Toast.LENGTH_SHORT).show();
+                                list.add(model1);
+
+                                adapter.notifyDataSetChanged();
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+        });
+
         list.clear();
         adapter.notifyDataSetChanged();
 

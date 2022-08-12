@@ -116,11 +116,18 @@ public class AddContestQuestionActivity extends AppCompatActivity {
                                     binding.memoryusageallowed.getText().toString().trim(), "", String.valueOf(value));
                             if (binding.contestdifficultyquestion.getText().toString().toLowerCase(Locale.ROOT).equals("hard")) {
                                 model.setDifficulty("Hard");
+                                model.setAvgtime("60");
                             } else if (binding.contestdifficultyquestion.getText().toString().toLowerCase(Locale.ROOT).equals("easy")) {
                                 model.setDifficulty("Easy");
+                                model.setAvgtime("20");
                             } else if (binding.contestdifficultyquestion.getText().toString().toLowerCase(Locale.ROOT).equals("medium")) {
                                 model.setDifficulty("Medium");
-                            } else model.setDifficulty("NA");
+                                model.setAvgtime("40");
+                            } else {
+                                model.setDifficulty("NA");
+                                model.setAvgtime("NA");
+                            }
+
 
                             database.getReference().child("Admins").child(FirebaseAuth.getInstance().getUid()).child("questions").child(String.valueOf(value)).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

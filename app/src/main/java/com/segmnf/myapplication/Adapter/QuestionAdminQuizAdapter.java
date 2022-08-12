@@ -2,7 +2,6 @@ package com.segmnf.myapplication.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,21 +12,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.segmnf.myapplication.Model.QuizQuestionModel;
 import com.segmnf.myapplication.R;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class QuestionAdminAdapter extends RecyclerView.Adapter<QuestionAdminAdapter.Hold> {
+public class QuestionAdminQuizAdapter extends RecyclerView.Adapter<QuestionAdminQuizAdapter.Hold> {
 
     ArrayList<QuizQuestionModel> items;
     FirebaseDatabase database;
@@ -37,7 +33,7 @@ public class QuestionAdminAdapter extends RecyclerView.Adapter<QuestionAdminAdap
     String quiz;
 
 
-    public QuestionAdminAdapter(ArrayList<QuizQuestionModel> items, String quiz) {
+    public QuestionAdminQuizAdapter(ArrayList<QuizQuestionModel> items, String quiz) {
         this.items = items;
         this.quiz=quiz;
 
@@ -45,13 +41,13 @@ public class QuestionAdminAdapter extends RecyclerView.Adapter<QuestionAdminAdap
 
     @NonNull
     @Override
-    public QuestionAdminAdapter.Hold onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public QuestionAdminQuizAdapter.Hold onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_view_quiz_question_admin, parent, false);
-        return new QuestionAdminAdapter.Hold(view);
+        return new QuestionAdminQuizAdapter.Hold(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QuestionAdminAdapter.Hold holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull QuestionAdminQuizAdapter.Hold holder, @SuppressLint("RecyclerView") int position) {
         database = FirebaseDatabase.getInstance("https://tynkr-3915c-default-rtdb.asia-southeast1.firebasedatabase.app/");
         QuizQuestionModel model = items.get(position);
         prefs = holder.itemView.getContext().getSharedPreferences("QuestionList", Context.MODE_PRIVATE);

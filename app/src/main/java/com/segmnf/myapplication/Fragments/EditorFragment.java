@@ -114,6 +114,17 @@ public class EditorFragment extends Fragment {
 
             }
         });
+        binding.restore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                preferences = getActivity().getSharedPreferences(MY_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+                binding.codeView.setTextHighlighted(preferences.getString("code",""));
+
+                Toast.makeText(getContext(), "Restored last saved code.", Toast.LENGTH_SHORT).show();
+
+            }
+            });
 
 
         return binding.getRoot();
