@@ -45,6 +45,7 @@ public class UserDetailActivity extends AppCompatActivity {
     ActivityUserDetailBinding binding;
     private FirebaseDatabase database;
     String photouriString;
+    int admin;
 
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
@@ -113,9 +114,16 @@ public class UserDetailActivity extends AppCompatActivity {
                             uploadToFirebase(Uri.parse(photouriString));
 
                             String curr = new SimpleDateFormat("dd  MMM  yyyy").format(new Date());
-
-                            UserModel model = new UserModel(FirebaseAuth.getInstance().getUid(), binding.nameuser.getText().toString(), binding.Biouser.getText().toString(), photouriString, "role"
-                            );
+                            UserModel model;
+                            if(admin==1){
+                                 model = new UserModel(FirebaseAuth.getInstance().getUid(), binding.nameuser.getText().toString(), binding.Biouser.getText().toString(), photouriString, "admin"
+                                );
+                            }
+                            else
+                            {
+                                model = new UserModel(FirebaseAuth.getInstance().getUid(), binding.nameuser.getText().toString(), binding.Biouser.getText().toString(), photouriString, "student"
+                                );
+                            }
                             snapshot.getRef().setValue(model);
 
                             database.getReference().child("Incomplete_login").child(FirebaseAuth.getInstance().getUid()).removeValue();
@@ -134,6 +142,29 @@ public class UserDetailActivity extends AppCompatActivity {
 
                     Toast.makeText(UserDetailActivity.this, "Please enter your name", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        binding.finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
+        });
+        binding.admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.admin.setTextColor(getResources().getColor(R.color.basket));
+                admin=1;
+                binding.student.setTextColor(getResources().getColor(R.color.background3));
+            }
+        });
+
+        binding.student.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.student.setTextColor(getResources().getColor(R.color.basket));
+                admin=0;
+                binding.admin.setTextColor(getResources().getColor(R.color.background3));
             }
         });
 

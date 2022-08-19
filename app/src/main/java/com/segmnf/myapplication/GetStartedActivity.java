@@ -133,14 +133,14 @@ public class GetStartedActivity extends AppCompatActivity {
                                 database.getReference().child("Incomplete_login").child(FirebaseAuth.getInstance().getUid()).setValue(FirebaseAuth.getInstance().getUid());
                                 Intent intent = new Intent(GetStartedActivity.this,UserDetailActivity.class);
                                 intent.putExtra("msg", "false");
-                                Toast.makeText(GetStartedActivity.this, "New USer", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(GetStartedActivity.this, "New USer", Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
                                 finishAffinity();
                             }
                             else{
                                 Intent intent = new Intent(GetStartedActivity.this,HomeActivity.class);
                                 startActivity(intent);
-                                Toast.makeText(GetStartedActivity.this,"Old User",Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(GetStartedActivity.this,"Old User",Toast.LENGTH_SHORT).show();
                                 finishAffinity();
                             }
                             finish();

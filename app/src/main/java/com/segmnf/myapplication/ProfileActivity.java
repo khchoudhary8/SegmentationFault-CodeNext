@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.gesture.GestureLibraries;
@@ -20,8 +22,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.segmnf.myapplication.Adapter.ContestAdapter;
+import com.segmnf.myapplication.Adapter.YourActivityAdapter;
 import com.segmnf.myapplication.Fragments.SettingBottomSheetFragment;
+import com.segmnf.myapplication.Model.ActivityModel;
+import com.segmnf.myapplication.Model.ContestModel;
 import com.segmnf.myapplication.Model.NewsModel;
+import com.segmnf.myapplication.Model.QuizModel;
 import com.segmnf.myapplication.Model.UserModel;
 import com.segmnf.myapplication.databinding.ActivityNewsDetailBinding;
 import com.segmnf.myapplication.databinding.ActivityProfileBinding;
@@ -32,6 +39,7 @@ import java.util.Locale;
 public class ProfileActivity extends AppCompatActivity {
     ActivityProfileBinding binding;
     private FirebaseDatabase database;
+    ArrayList<ActivityModel> list= new ArrayList<>();
 
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
@@ -104,6 +112,60 @@ public class ProfileActivity extends AppCompatActivity {
 
                         SettingBottomSheetFragment settingBottomSheetFragment = new SettingBottomSheetFragment();
                         settingBottomSheetFragment.show(getSupportFragmentManager(), settingBottomSheetFragment.getTag());
+
+            }
+        });
+
+        RecyclerView recy = binding.activityrecycler;
+        list= new ArrayList<>();
+        YourActivityAdapter adapter = new YourActivityAdapter(list);
+        LinearLayoutManager manager = new LinearLayoutManager(ProfileActivity.this, LinearLayoutManager.VERTICAL, false);
+        recy.setLayoutManager(manager);
+        recy.setAdapter(adapter);
+        database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot s:snapshot.getChildren())
+                    {
+                        if(s.exists()){
+                            ContestModel model = s.getValue(ContestModel.class);
+                            list.add(new ActivityModel(model.getName(), "Contest", model.getScore()));
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Quizzes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot s:snapshot.getChildren())
+                    {
+                        if(s.exists()){
+                            QuizModel model = s.getValue(QuizModel.class);
+                            if(model.getIsresultvisible().toLowerCase(Locale.ROOT).equals("true")) {
+                                list.add(new ActivityModel(model.getName(), "Quiz", model.getUserscore()));
+                            }
+                            else
+                                list.add(new ActivityModel(model.getName(), "Quiz", "-"));
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

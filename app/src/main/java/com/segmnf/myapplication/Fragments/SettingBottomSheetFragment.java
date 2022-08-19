@@ -1,5 +1,6 @@
 package com.segmnf.myapplication.Fragments;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -13,10 +14,14 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.segmnf.myapplication.AdminDashboardActivity;
 import com.segmnf.myapplication.GetStartedActivity;
 import com.segmnf.myapplication.Model.ContestModel;
+import com.segmnf.myapplication.Model.UserModel;
 import com.segmnf.myapplication.R;
 import com.segmnf.myapplication.UserDetailActivity;
 
@@ -49,7 +54,22 @@ public class SettingBottomSheetFragment extends BottomSheetDialogFragment {
 
             }
         });
+        database.getReference().child("User_details").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    UserModel model= snapshot.getValue(UserModel.class);
+                    if(model.getRole().equals("student")){
+                        admin.setVisibility(View.GONE);
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +83,7 @@ public class SettingBottomSheetFragment extends BottomSheetDialogFragment {
         admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startActivity(new Intent(getContext(), AdminDashboardActivity.class));
             }
         });

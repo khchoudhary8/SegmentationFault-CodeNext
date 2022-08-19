@@ -56,7 +56,7 @@
                 android:maxLines="2"
                 android:text="CharAtC++"
                 android:textColor="@color/black"
-                android:textSize="18dp"
+                android:textSize="17dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -77,15 +77,16 @@
                 android:id="@+id/quiztopic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="#cpp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:textColor="#E1E1E1"
                 android:textSize="14dp"
                 android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="@+id/leaderboard"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView8"
                 app:layout_constraintStart_toEndOf="@+id/imagequiz"
-                app:layout_constraintTop_toTopOf="@+id/leaderboard" />
+                app:layout_constraintTop_toTopOf="@+id/cardView8" />
 
 
             <androidx.cardview.widget.CardView
@@ -162,11 +163,11 @@
                 android:id="@+id/cardView6"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 app:cardBackgroundColor="#BABABA"
                 app:cardCornerRadius="12dp"
                 app:layout_constraintStart_toStartOf="@+id/quiztopic"
-                app:layout_constraintTop_toBottomOf="@+id/quiztopic">
+                app:layout_constraintTop_toBottomOf="@+id/cardView8">
 
                 <ImageView
                     android:layout_width="18dp"
@@ -197,9 +198,9 @@
                 android:id="@+id/cardView8"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
-                app:cardBackgroundColor="#0079DA"
                 android:layout_marginTop="14dp"
                 android:layout_marginRight="14dp"
+                app:cardBackgroundColor="#0079DA"
                 app:cardCornerRadius="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

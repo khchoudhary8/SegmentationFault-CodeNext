@@ -113,6 +113,7 @@ public class QuizQuestionActivity extends AppCompatActivity {
         visibility = intent.getStringExtra("visibility");
         isresultvisible = intent.getStringExtra("isresultvisible");
 
+        binding.quiznameinside.setText(namequiz);
         progressBar.setMax((int) (Double.parseDouble(intent.getStringExtra("duration")) * 60));
         startTimer(Double.parseDouble(intent.getStringExtra("duration")));
 

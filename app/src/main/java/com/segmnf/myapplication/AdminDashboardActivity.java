@@ -1,5 +1,6 @@
 package com.segmnf.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -14,8 +15,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.segmnf.myapplication.Model.ContestModel;
 import com.segmnf.myapplication.Model.QuizModel;
 import com.segmnf.myapplication.Model.QuizQuestionModel;
 import com.segmnf.myapplication.databinding.ActivityAddQuizBinding;
@@ -89,6 +96,52 @@ public class AdminDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AdminDashboardActivity.this, AddContestActivity.class));
+            }
+        });
+
+        database.getReference().child("Contests").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int c=0;
+                if(snapshot.exists())
+                {
+                    for(DataSnapshot s:snapshot.getChildren())
+                    {
+                        ContestModel model= s.getValue(ContestModel.class);
+                       if(model.getAdminid().equals(FirebaseAuth.getInstance().getUid()))
+                           c++;
+                    }
+                }
+
+                binding.totalEarnings.setText(c+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        database.getReference().child("Quizzes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int c=0;
+                if(snapshot.exists())
+                {
+                    for(DataSnapshot s:snapshot.getChildren())
+                    {
+                        QuizModel model= s.getValue(QuizModel.class);
+                        if(model.getAdminid().equals(FirebaseAuth.getInstance().getUid()))
+                            c++;
+                    }
+                }
+
+                binding.totalBook.setText(c+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

@@ -99,22 +99,25 @@ public class AddQuizQuestion extends AppCompatActivity {
             public void onClick(View v) {
                 if(binding.namequizquestion.getText().toString().trim().length()>0  && binding.marksquizquestion.getText().toString().trim().length()>0  &&
                         binding.op1question.getText().toString().trim().length()>0  && binding.op2question.getText().toString().trim().length()>0  && binding.op3question.getText().toString().trim().length()>0  &&
-                        binding.op4question.getText().toString().trim().length()>0  && binding.correctopquestion.getText().toString().trim().length()>0)
+                        binding.op4question.getText().toString().trim().length()>0  && binding.correctopquestion.getText().toString().trim().length()>0) {
 
                     database.getReference().child("Extras").child("quizquestion").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                             value = Integer.parseInt(snapshot.getValue().toString());
-                            QuizQuestionModel model= new QuizQuestionModel(FirebaseAuth.getInstance().getUid(), "",String.valueOf(value), binding.marksquizquestion.getText().toString().trim(),
-                                    binding.namequizquestion.getText().toString().trim(),"", binding.op1question.getText().toString().trim(),binding.op2question.getText().toString().trim(),
+                            QuizQuestionModel model = new QuizQuestionModel(FirebaseAuth.getInstance().getUid(), "", String.valueOf(value), binding.marksquizquestion.getText().toString().trim(),
+                                    binding.namequizquestion.getText().toString().trim(), "", binding.op1question.getText().toString().trim(), binding.op2question.getText().toString().trim(),
                                     binding.op3question.getText().toString().trim(),
-                                    binding.op4question.getText().toString().trim(),binding.correctopquestion.getText().toString().trim());
+                                    binding.op4question.getText().toString().trim(), binding.correctopquestion.getText().toString().trim());
+                            if(uri2!=null)
                             uploadToFirebase(uri2);
+
                             database.getReference().child("Admins").child(FirebaseAuth.getInstance().getUid()).child("Quizzes").child(String.valueOf(value)).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isComplete()){
-                                        database.getReference().child("Extras").child("quizquestion").setValue(String.valueOf(value+1));
+                                    if (task.isComplete()) {
+                                        database.getReference().child("Extras").child("quizquestion").setValue(String.valueOf(value + 1));
                                         Toast.makeText(AddQuizQuestion.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                                         finish();
                                     }
@@ -128,6 +131,8 @@ public class AddQuizQuestion extends AppCompatActivity {
 
                         }
                     });
+                }
+                else Toast.makeText(AddQuizQuestion.this, "Enter all fields", Toast.LENGTH_SHORT).show();
 
 
             }

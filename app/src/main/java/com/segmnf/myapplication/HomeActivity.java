@@ -1,6 +1,7 @@
 package com.segmnf.myapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,18 +9,26 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.segmnf.myapplication.Fragments.ContestFragment;
 import com.segmnf.myapplication.Fragments.HomeFragment;
 import com.segmnf.myapplication.Fragments.QuizFragment;
 import com.segmnf.myapplication.databinding.ActivityHomeBinding;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
@@ -107,6 +116,70 @@ public class HomeActivity extends AppCompatActivity {
 
             }
 
+        });
+        ExecutorService service = Executors.newSingleThreadExecutor();
+
+        service.execute(new Runnable() {
+            @Override
+            public void run() {
+                database.getReference().child("Incomplete_login").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            Intent intent = new Intent(HomeActivity.this,UserDetailActivity.class);
+                            intent.putExtra("msg", "false");
+                            startActivity(intent);
+                            finish();
+                        }
+                        else{
+                            database.getReference().child("User_details").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(!snapshot.exists()){
+                                        Intent intent = new Intent(HomeActivity.this,UserDetailActivity.class);
+                                        intent.putExtra("msg", "false");
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+/*
+                database.getReference().child("Banners").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        banners.clear();
+                        if(snapshot.exists()){
+
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()){
+
+                                banners.add(snapshot1.getValue(String.class));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+*/
+
+            }
         });
 
     }
