@@ -56,7 +56,7 @@ public class ContestFragment extends Fragment {
         cardimg.add(R.drawable.ic_undraw_functions_re_alho);
 
         RecyclerView contestrecycler = view.findViewById(R.id.contestreecycler);
-        ContestModel model = new ContestModel("Interview Prep 3.0", "24 Jul", "120", "3", "60", "2", "00:00", "02:00", "21 22 23", "100", "0", "0", "0","Easy");
+//        ContestModel model = new ContestModel("Interview Prep 3.0", "24 Jul", "120", "3", "60", "2", "00:00", "02:00", "21 22 23", "100", "0", "0", "0","Easy");
 //        database.getReference().child("Contests").child("4").setValue(model);
         ContestAdapter adapter = new ContestAdapter(list, cardbg, cardimg);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);

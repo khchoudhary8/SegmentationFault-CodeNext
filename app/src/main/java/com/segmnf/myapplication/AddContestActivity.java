@@ -266,7 +266,7 @@ public class AddContestActivity extends AppCompatActivity {
                                                     "", String.valueOf(count), binding.starttimecontest.getText().toString().trim(),
                                                     binding.endtimecontest.getText().toString().trim(),"",
                                                    FirebaseAuth.getInstance().getUid(),
-                                                    "0","0","0",binding.difficultycontest.getText().toString().toLowerCase(Locale.ROOT).trim());
+                                                    "0","0","0",binding.difficultycontest.getText().toString().toLowerCase(Locale.ROOT).trim(), binding.editoriallink.getText().toString().trim());
 
 
 

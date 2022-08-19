@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,15 +86,13 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         if (model.getId().equals("112")) {
             holder.parent.setVisibility(View.INVISIBLE);
         }
-        if(model.getTough().toLowerCase(Locale.ROOT).equals("hard")){
+        if (model.getTough().toLowerCase(Locale.ROOT).equals("hard")) {
             holder.tough.setText("Hard");
 
-        }
-        else if(model.getTough().toLowerCase(Locale.ROOT).equals("medium")){
+        } else if (model.getTough().toLowerCase(Locale.ROOT).equals("medium")) {
             holder.tough.setText("Medium");
 
-        }
-       else if(model.getTough().toLowerCase(Locale.ROOT).equals("easy")){
+        } else if (model.getTough().toLowerCase(Locale.ROOT).equals("easy")) {
             holder.tough.setText("Easy");
 
         }
@@ -166,7 +165,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
 //                database.getReference().child("LeaderBoard").child("2").child("7").setValue(new LeaderboardModel("LUhln8QO6yeTKVKM1bdRENOaDtD3","50","51:22"));
 //
 //                database.getReference().child("LeaderBoard").child("2").child("5").setValue(new LeaderboardModel("LUhln8QO6yeTKVKM1bdRENOaDtD3","50","51:22"));
-            database.getReference().child("LeaderBoard").child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                database.getReference().child("LeaderBoard").child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot snapshot1 : snapshot.getChildren()) {
@@ -194,6 +193,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
                 TextView start = (TextView) dialog.findViewById(R.id.starttime);
                 TextView end = (TextView) dialog.findViewById(R.id.endtime);
                 TextView leader = (TextView) dialog.findViewById(R.id.leaderboardbutton);
+                TextView editorial = (TextView) dialog.findViewById(R.id.editorial);
 
                 start.setText(model.getStart());
                 end.setText(model.getEnd());
@@ -203,14 +203,67 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
                         "");
 
 
+                editorial.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                        SimpleDateFormat dateformatter = new SimpleDateFormat("dd MMM");
+                        String currentDate = new SimpleDateFormat("dd MMM", Locale.getDefault()).format(new Date());
+                        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                        if (currentDate.equals(model.getDate())) {
+
+
+                            Date date_to = null;
+                            try {
+                                date_to = formatter.parse(model.getEnd());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Date dateNow = null;
+                            try {
+                                dateNow = formatter.parse(currentTime);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (date_to.before(dateNow)) {
+                                Uri uri = Uri.parse(model.getEditorial()); // missing 'http://' will cause crashed
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                v.getContext().startActivity(intent);
+
+                            } else
+                                Toast.makeText(v.getContext(), "Content not yet ended", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Date from = null;
+                            try {
+                                from = dateformatter.parse(model.getDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Date today = null;
+                            try {
+                                today = dateformatter.parse(currentDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (today.after(from)) {
+                                Uri uri = Uri.parse(model.getEditorial()); // missing 'http://' will cause crashed
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                v.getContext().startActivity(intent);
+                            }else
+                                Toast.makeText(v.getContext(), "Content not yet ended", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                });
                 leader.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        if(list.size()>0){
+                        if (list.size() > 0) {
                             ShowDialogForLeaderboard(v.getContext(), model, list);
-                        }
-                            else
+                        } else
                             Toast.makeText(v.getContext(), "Leaderboard not available", Toast.LENGTH_SHORT).show();
 
 
@@ -419,8 +472,8 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         myDialog.setContentView(R.layout.leaderboard_dialog);
         myDialog.setCanceledOnTouchOutside(false);
         myDialog.setCancelable(true);
-        TextView  two, three, name1, name2, name3, score1, score2, score3, total;
-        ImageView image1,image2, image3;
+        TextView two, three, name1, name2, name3, score1, score2, score3, total;
+        ImageView image1, image2, image3;
         MaterialCardView card2, card3;
         two = myDialog.findViewById(R.id.two);
         three = myDialog.findViewById(R.id.three);
@@ -445,37 +498,36 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         score2.setVisibility(View.INVISIBLE);
         score3.setVisibility(View.INVISIBLE);
 
-        total.setText("Total: "+list1.size());
+        total.setText("Total: " + list1.size());
 
-        for(int i=0; i<list1.size();i++)
-        {
+        for (int i = 0; i < list1.size(); i++) {
             int finalI = i;
             database.getReference().child("User_details").child(list1.get(i).getUserid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
+                    if (snapshot.exists()) {
                         UserModel model = snapshot.getValue(UserModel.class);
-                        if(model.getUid().equals(FirebaseAuth.getInstance().getUid()))
+                        if (model.getUid().equals(FirebaseAuth.getInstance().getUid()))
                             model.setName("You");
 
-                        if(finalI ==0) {
+                        if (finalI == 0) {
                             Glide.with(image1).load(model.getImage()).into(image1);
                             name1.setText(model.getName());
-                            score1.setText(list1.get(0).getScore()+"\n"+list1.get(0).getTimetaken());
+                            score1.setText(list1.get(0).getScore() + "\n" + list1.get(0).getTimetaken());
                         }
-                        if(finalI==1){
+                        if (finalI == 1) {
                             Glide.with(image2).load(model.getImage()).into(image2);
                             name2.setText(model.getName());
-                            score2.setText(list1.get(1).getScore()+"\n"+list1.get(1).getTimetaken());
+                            score2.setText(list1.get(1).getScore() + "\n" + list1.get(1).getTimetaken());
                             name2.setVisibility(View.VISIBLE);
                             card2.setVisibility(View.VISIBLE);
                             score2.setVisibility(View.VISIBLE);
                             two.setVisibility(View.VISIBLE);
                         }
-                        if(finalI==2){
+                        if (finalI == 2) {
                             Glide.with(image3).load(model.getImage()).into(image3);
                             name3.setText(model.getName());
-                            score3.setText(list1.get(2).getScore()+"\n"+list1.get(2).getTimetaken());
+                            score3.setText(list1.get(2).getScore() + "\n" + list1.get(2).getTimetaken());
                             name3.setVisibility(View.VISIBLE);
                             card3.setVisibility(View.VISIBLE);
                             score3.setVisibility(View.VISIBLE);

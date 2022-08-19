@@ -218,6 +218,16 @@
                     android:textSize="12dp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/deletequiz"
+                android:src="@drawable/ic_baseline_delete_forever_24"
+                app:layout_constraintEnd_toEndOf="@+id/cardView8"
+                app:layout_constraintTop_toBottomOf="@+id/cardView8"
+                app:tint="@color/background2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

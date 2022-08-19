@@ -144,5 +144,21 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
             }
         });
+        binding.quizhistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(AdminDashboardActivity.this, HistoryActivity.class);
+                intent.putExtra("type", "quiz");
+                startActivity(intent);
+            }
+        });
+        binding.contestHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(AdminDashboardActivity.this, HistoryActivity.class);
+                intent.putExtra("type", "contest");
+                startActivity(intent);
+            }
+        });
     }
 }
