@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,6 +75,7 @@ public class HistoryContestAdapter extends RecyclerView.Adapter<HistoryContestAd
         holder.name.setText(model.getName());
         holder.cardLeader.setImageResource(R.drawable.ic_baseline_delete_forever_24);
         holder.cardLeader.setVisibility(View.VISIBLE);
+        ImageViewCompat.setImageTintList(holder.cardLeader, ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.getContext(),R.color.white)));
         holder.cardLeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

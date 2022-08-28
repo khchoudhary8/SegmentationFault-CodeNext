@@ -220,13 +220,13 @@
             </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:id="@+id/deletequiz"
+                android:layout_width="wrap_content"
+                android:visibility="invisible"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_delete_forever_24"
+                app:layout_constraintBottom_toBottomOf="@+id/quizquestions"
                 app:layout_constraintEnd_toEndOf="@+id/cardView8"
-                app:layout_constraintTop_toBottomOf="@+id/cardView8"
                 app:tint="@color/background2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

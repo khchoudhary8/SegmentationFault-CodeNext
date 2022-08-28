@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -86,10 +87,13 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
-        if(getIntent().getStringExtra("type").equals("quiz")){
+        list.clear();
+        Toast.makeText(this, "" + getIntent().getStringExtra("type"), Toast.LENGTH_SHORT).show();
+        if (getIntent().getStringExtra("type").equals("quiz")) {
+            list.clear();
             binding.textView20.setText("Quizzes");
             RecyclerView recy = binding.historyrecyeler;
-            list= new ArrayList<>();
+            list = new ArrayList<>();
             HistoryQuizAdapter adapter = new HistoryQuizAdapter(list);
             LinearLayoutManager manager = new LinearLayoutManager(HistoryActivity.this, LinearLayoutManager.VERTICAL, false);
             recy.setLayoutManager(manager);
@@ -97,13 +101,39 @@ public class HistoryActivity extends AppCompatActivity {
             database.getReference().child("Quizzes").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot s:snapshot.getChildren())
-                    {
-                        if(s.exists())
-                        {
+                    for (DataSnapshot s : snapshot.getChildren()) {
+                        if (s.exists()) {
                             QuizModel model2 = s.getValue(QuizModel.class);
-                            if(model2.getAdminid().equals(FirebaseAuth.getInstance().getUid()))
-                               list.add(model2);
+                            if (model2.getAdminid().equals(FirebaseAuth.getInstance().getUid()))
+                                list.add(model2);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } else {
+            list.clear();
+            binding.textView20.setText("Contests");
+            RecyclerView recy = binding.historyrecyeler;
+            ArrayList<ContestModel> list = new ArrayList<>();
+            HistoryContestAdapter adapter = new HistoryContestAdapter(list);
+            LinearLayoutManager manager = new LinearLayoutManager(HistoryActivity.this, LinearLayoutManager.VERTICAL, false);
+            recy.setLayoutManager(manager);
+            recy.setAdapter(adapter);
+            database.getReference().child("Contests").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot s : snapshot.getChildren()) {
+                        if (s.exists()) {
+                            ContestModel model2 = s.getValue(ContestModel.class);
+                            Toast.makeText(HistoryActivity.this, "" + model2.getAdminid(), Toast.LENGTH_SHORT).show();
+                            if (model2.getAdminid().equals(FirebaseAuth.getInstance().getUid()))
+                                list.add(model2);
                         }
                         adapter.notifyDataSetChanged();
                     }
@@ -115,34 +145,6 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             });
         }
-        else
-            binding.textView20.setText("Contests");
-        RecyclerView recy = binding.historyrecyeler;
-       ArrayList<ContestModel> list= new ArrayList<>();
-        HistoryContestAdapter adapter = new HistoryContestAdapter(list);
-        LinearLayoutManager manager = new LinearLayoutManager(HistoryActivity.this, LinearLayoutManager.VERTICAL, false);
-        recy.setLayoutManager(manager);
-        recy.setAdapter(adapter);
-        database.getReference().child("Contests").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot s:snapshot.getChildren())
-                {
-                    if(s.exists())
-                    {
-                        ContestModel model2 = s.getValue(ContestModel.class);
-                        if(model2.getAdminid().equals(FirebaseAuth.getInstance().getUid()))
-                            list.add(model2);
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
 }
