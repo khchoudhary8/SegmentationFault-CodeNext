@@ -79,6 +79,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         int indeximage = random.nextInt(cardimg.size());
         holder.card.setImageResource(cardbg.get(index));
         holder.cardimage.setImageResource(cardimg.get(indeximage));
+//        Toast.makeText(holder.itemView.getContext(), ""+model.getMarks(), Toast.LENGTH_SHORT).show();
         holder.marks.setText(model.getMarks() + " Marks");
         holder.duration.setText(model.getDuration() + " mins");
         holder.date.setText(model.getDate());

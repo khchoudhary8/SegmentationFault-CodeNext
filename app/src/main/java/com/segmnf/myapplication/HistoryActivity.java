@@ -88,7 +88,7 @@ public class HistoryActivity extends AppCompatActivity {
         });
 
         list.clear();
-        Toast.makeText(this, "" + getIntent().getStringExtra("type"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "" + getIntent().getStringExtra("type"), Toast.LENGTH_SHORT).show();
         if (getIntent().getStringExtra("type").equals("quiz")) {
             list.clear();
             binding.textView20.setText("Quizzes");
@@ -131,7 +131,7 @@ public class HistoryActivity extends AppCompatActivity {
                     for (DataSnapshot s : snapshot.getChildren()) {
                         if (s.exists()) {
                             ContestModel model2 = s.getValue(ContestModel.class);
-                            Toast.makeText(HistoryActivity.this, "" + model2.getAdminid(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(HistoryActivity.this, "" + model2.getAdminid(), Toast.LENGTH_SHORT).show();
                             if (model2.getAdminid().equals(FirebaseAuth.getInstance().getUid()))
                                 list.add(model2);
                         }

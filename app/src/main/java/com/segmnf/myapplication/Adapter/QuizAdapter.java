@@ -92,6 +92,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.Hold> {
         }
         holder.topic.setText(model.getTopic());
         holder.tough.setText(model.getDifficulty());
+        holder.deletequiz.setVisibility(View.INVISIBLE);
 
 
         holder.parent.setOnClickListener(new View.OnClickListener() {
@@ -609,7 +610,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.Hold> {
 
     public class Hold extends RecyclerView.ViewHolder {
         TextView name, marks, duration, date, questions, tough, topic;
-        ImageView cardimage;
+        ImageView cardimage, deletequiz;
         CardView parent;
 
         public Hold(@NonNull View itemView) {
@@ -622,6 +623,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.Hold> {
             parent = itemView.findViewById(R.id.cardparentquiz);
             tough = itemView.findViewById(R.id.difficultycardquiz);
             topic = itemView.findViewById(R.id.quiztopic);
+            deletequiz= itemView.findViewById(R.id.deletequiz);
 
         }
 

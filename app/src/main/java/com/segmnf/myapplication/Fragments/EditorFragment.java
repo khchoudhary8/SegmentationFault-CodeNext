@@ -48,6 +48,38 @@ public class EditorFragment extends Fragment {
             "\t// your code goes here\n" +
             "\treturn 0;\n" +
             "}";
+
+
+    String pycode="# This program prints Hello, world!\n" +
+            "\n" +
+            "    print('Hello, world!')";
+
+    String kotlin="fun main(args: Array<String>) {\n" +
+            "    println(\"Hello, World!\")\n" +
+            "}";
+
+    String csharp="using System;\n" +
+            "using System.Collections.Generic;\n" +
+            "using System.Linq;\n" +
+            "using System.Text;\n" +
+            "using System.Threading.Tasks;\n" +
+            "\n" +
+            "namespace CSharpTut\n" +
+            "{\n" +
+            "    class Program\n" +
+            "    {\n" +
+            "        static void Main(string[] args)\n" +
+            "        {\n" +
+            "            string message = \"Hello World!!\";\n" +
+            "\n" +
+            "            Console.WriteLine(message);\n" +
+            "        }\n" +
+            "    }\n" +
+            "}";
+
+    String rubycode="\n" +
+            "puts \"Hello World\"";
+
     String lang= "cpp";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,6 +128,26 @@ public class EditorFragment extends Fragment {
                 {
                     binding.codeView.setTextHighlighted(javacode);
                     lang ="java";
+                }
+                else if(newIndex==3)
+                {
+                    binding.codeView.setTextHighlighted(pycode);
+                    lang ="python3";
+                }
+                else if(newIndex==4)
+                {
+                    binding.codeView.setTextHighlighted(csharp);
+                    lang ="csharp";
+                }
+                else if(newIndex==5)
+                {
+                    binding.codeView.setTextHighlighted(kotlin);
+                    lang ="kotlin";
+                }
+                else if(newIndex==6)
+                {
+                    binding.codeView.setTextHighlighted(rubycode);
+                    lang ="ruby";
                 }
             }
         });

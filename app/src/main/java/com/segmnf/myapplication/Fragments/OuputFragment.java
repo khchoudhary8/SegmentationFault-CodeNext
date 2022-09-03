@@ -87,6 +87,19 @@ public class OuputFragment extends Fragment {
                 if (language.equals("c"))
                     versionIndex = "5";
 
+                if (language.equals("python3"))
+                    versionIndex = "4";
+
+                if (language.equals("csharp"))
+                    versionIndex = "4";
+
+                if (language.equals("kotlin"))
+                    versionIndex = "3";
+
+                if (language.equals("ruby"))
+                    versionIndex = "4";
+
+
                 Log.d("TAG", language + versionIndex);
                 Log.d("TAG", script);
                 Log.d("TAG", stdin);
@@ -116,6 +129,19 @@ public class OuputFragment extends Fragment {
 
                 if (language.equals("c"))
                     versionIndex = "5";
+
+                if (language.equals("python3"))
+                    versionIndex = "4";
+
+                if (language.equals("csharp"))
+                    versionIndex = "4";
+
+                if (language.equals("kotlin"))
+                    versionIndex = "3";
+
+                if (language.equals("ruby"))
+                    versionIndex = "4";
+
                 Log.d("TAG", language + versionIndex);
                 Log.d("TAG", script);
                 Log.d("TAG", testcase);
@@ -155,8 +181,6 @@ public class OuputFragment extends Fragment {
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                                                 int prevmarks= Integer.parseInt(snapshot.getValue().toString().trim());
-
-
                                                 database.getReference().child("Score").child(FirebaseAuth.getInstance().getUid()).child("Contests").child(contestid).child("score").
                                                         setValue(String.valueOf(prevmarks+Integer.parseInt(marks)));
                                             }

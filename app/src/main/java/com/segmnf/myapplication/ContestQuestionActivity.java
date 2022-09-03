@@ -107,6 +107,7 @@ public class ContestQuestionActivity extends AppCompatActivity {
         duration = intent.getStringExtra("duration");
         contestid = intent.getStringExtra("id");
         String adminid = intent.getStringExtra("adminid");
+        binding.contestnameinside.setText(name);
 
         adapter = new QuestionInsideAdapter(list, ContestQuestionActivity.this);
         LinearLayoutManager manager = new LinearLayoutManager(ContestQuestionActivity.this, LinearLayoutManager.VERTICAL, false);
