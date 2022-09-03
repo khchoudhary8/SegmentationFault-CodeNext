@@ -86,6 +86,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.Hold> {
         holder.questions.setText(model.getQuestions() + " Questions");
         if (model.getId().equals("112")) {
 
+
             holder.parent.setVisibility(View.INVISIBLE);
         }
         if (model.getTough().toLowerCase(Locale.ROOT).equals("hard")) {
