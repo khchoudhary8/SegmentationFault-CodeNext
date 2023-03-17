@@ -1,6 +1,6 @@
 # SegmentationFault-CodeNext
 
-I developed CodeNext as an app which could provide environment for learning a Programming Language and also for giving Contest and Quizzes withouf=t the need of a Laptop.
+I developed CodeNext as an app which could provide environment for learning a Programming Language and also for giving Contest and Quizzes without the need of a Laptop.
 I have used Jdoodle API for Compilation, Android Studio Java for development, Firebase as Backend and many other Libraries for different functionalities.
 
 
